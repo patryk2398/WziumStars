@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WziumStars.Data;
+using WziumStars.Models;
 
 namespace WziumStars.Areas.Admin.Controllers
 {
@@ -28,6 +29,21 @@ namespace WziumStars.Areas.Admin.Controllers
         public IActionResult Dodaj()
         {
             return View();
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Dodaj(Kategoria kategoria)
+        {
+            if(ModelState.IsValid)
+            {
+                _db.Kategoria.Add(kategoria);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(kategoria);
         }
     }
 }
