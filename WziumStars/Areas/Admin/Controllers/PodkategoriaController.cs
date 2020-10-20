@@ -138,5 +138,43 @@ namespace WziumStars.Areas.Admin.Controllers
             modelVM.Podkategoria.Id = id;
             return View(modelVM);
         }
+
+        //GET
+        public async Task<IActionResult> Usun(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var podkategoria = await _db.Podkategoria.FindAsync(id);
+            if (podkategoria == null)
+            {
+                return NotFound();
+            }
+
+            PodkategoriaAndKategoriaViewModel model = new PodkategoriaAndKategoriaViewModel()
+            {
+                KategoriaList = await _db.Kategoria.ToListAsync(),
+                Podkategoria = podkategoria,
+                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+            };
+            return View(model);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Usun(int id, PodkategoriaAndKategoriaViewModel model)
+        {
+            var podkategoria = await _db.Podkategoria.FindAsync(id);
+            if (podkategoria == null)
+            {
+                return View();
+            }
+
+            _db.Podkategoria.Remove(podkategoria);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -1,0 +1,33 @@
+﻿@model WziumStars.Models.ViewModels.PodkategoriaAndKategoriaViewModel
+@using WziumStars.Extensions
+@{
+    ViewData["Title"] = "Usun";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usun</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Podkategoria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Podkategoria.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Podkategoria.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Podkategoria.CategoryId)
+        </dt>
+        <dd class="col-sm-10">
+            <select disabled id="ddlCategorylist" asp-for="Podkategoria.CategoryId" asp-items="Model.KategoriaList.ToSelectListItem(Model.Podkategoria.CategoryId)" class="form-control"></select>
+        </dd>
+    </dl>
+
+    <form asp-action="Usun">
+        <input type="hidden" asp-for="Podkategoria.Id" />
+        <partial name="_DeleteAndBackButtonPartial" model="Model.Podkategoria.Id" />
+    </form>
+</div>
