@@ -24,6 +24,10 @@ namespace WziumStars.Areas.Admin.Controllers
             return View(await _db.Kategoria.ToListAsync());
         }
 
-
+        //GET
+        public IActionResult Dodaj()
+        {
+            return View();
+        }
     }
 }
