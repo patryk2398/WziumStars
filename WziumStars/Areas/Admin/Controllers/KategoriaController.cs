@@ -45,5 +45,35 @@ namespace WziumStars.Areas.Admin.Controllers
             }
             return View(kategoria);
         }
+
+        //GET
+        public async Task<IActionResult> Edytuj(int? id)
+        {
+            if(id==null)
+            {
+                return NotFound();
+            }
+            var kategoria = await _db.Kategoria.FindAsync(id);
+            if(kategoria==null)
+            {
+                return NotFound();
+            }
+            return View(kategoria);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edytuj(Kategoria kategoria)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Update(kategoria);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(kategoria);
+        }
     }
 }
