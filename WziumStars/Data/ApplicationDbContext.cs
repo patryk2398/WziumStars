@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WziumStars.Models;
 
 namespace WziumStars.Data
 {
@@ -12,5 +13,7 @@ namespace WziumStars.Data
             : base(options)
         {
         }
+
+        public DbSet<Kategoria> Kategoria { get; set; }
     }
 }
