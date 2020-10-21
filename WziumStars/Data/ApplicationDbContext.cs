@@ -16,5 +16,6 @@ namespace WziumStars.Data
 
         public DbSet<Kategoria> Kategoria { get; set; }
         public DbSet<Podkategoria> Podkategoria { get; set; }
+        public DbSet<Produkt> Produkt { get; set; }
     }
 }
