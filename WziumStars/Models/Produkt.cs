@@ -32,6 +32,8 @@ namespace WziumStars.Models
         [Display(Name = "Zdjęcia")]
         public string Images { get; set; }
 
+        public string Avatar { get; set; }
+
         [Display(Name = "Kategoria")]
         public int CategoryId { get; set; }
 

@@ -1,0 +1,102 @@
+﻿@model WziumStars.Models.ViewModels.ProduktViewModel
+@using WziumStars.Extensions
+@{
+    ViewData["Title"] = "Dodaj";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12 col-md-10 offset-md-1 mb-5">
+    <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Dodaj</h1>
+    <hr />
+    <form asp-action="Dodaj" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.Name" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <input asp-for="Produkt.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="Produkt.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.Description" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <textarea asp-for="Produkt.Description" id="mytextarea" class="form-control" rows="14"></textarea>
+            </div>
+            <span asp-validation-for="Produkt.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.Price" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <input asp-for="Produkt.Price" class="form-control" />
+            </div>
+            <span asp-validation-for="Produkt.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.CategoryId" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <select asp-for="@Model.Produkt.CategoryId" id="CategoryId" asp-items="Model.Kategoria.ToSelectListItem(Model.Produkt.CategoryId)" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.SubCategoryId" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <select asp-for="@Model.Produkt.SubCategoryId" id="SubCategoryId" asp-items="@(new SelectList(string.Empty,"Id","Name"))" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2 col-3">
+                <label asp-for="Produkt.Images" class="control-label"></label>
+            </div>
+            <div class="col-lg-5 col-9">
+                <input type="file" name="files" multiple class="form-control" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <input type="submit" value="DODAJ" class="goldButton col-2" />
+            <a asp-action="Index" class="brownButton col-2 offset-1">POWRÓT</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: "lists",
+            menubar: 'file edit format'
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getSubCategory();
+            $('#CategoryId').change(function () {
+                getSubCategory();
+            });
+        });
+        function getSubCategory() {
+            var url = '@Url.Content("~/")' + "Admin/Podkategoria/GetSubCategory";
+            var ddlsoruce = '#CategoryId';
+            $.getJSON(url, { id: $(ddlsoruce).val() }, function (data) {
+                var items = '';
+                $('#SubCategoryId').empty();
+                $.each(data, function (i, subcategory) {
+                    items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+                });
+                $('#SubCategoryId').html(items);
+            })
+        }
+    </script>
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
