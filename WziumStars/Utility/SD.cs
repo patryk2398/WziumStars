@@ -8,5 +8,8 @@ namespace WziumStars.Utility
     public class SD
     {
         public const string DefaultProduktImage = "default.png";
+
+        public const string AdminEndUser = "Admin";
+        public const string CustomerEndUser = "Customer";
     }
 }

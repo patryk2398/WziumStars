@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WziumStars.Data;
 using WziumStars.Models;
 using WziumStars.Models.ViewModels;
+using WziumStars.Utility;
 
 namespace WziumStars.Areas.Admin.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     [Area("Admin")]
     public class PodkategoriaController : Controller
     {

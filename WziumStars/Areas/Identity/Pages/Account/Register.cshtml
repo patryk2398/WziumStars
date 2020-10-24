@@ -1,4 +1,5 @@
 ﻿@page
+@using WziumStars.Utility
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -27,6 +28,17 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            @if (User.IsInRole(SD.AdminEndUser))
+            {
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label class="control-label">Rola</label>
+                    </div>
+                    <div class="col-9">
+                        <input type="radio" name="rdUserRole" value="@SD.AdminEndUser" checked />@SD.AdminEndUser
+                    </div>
+                </div>
+            }
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
