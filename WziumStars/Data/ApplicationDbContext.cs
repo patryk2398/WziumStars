@@ -18,5 +18,6 @@ namespace WziumStars.Data
         public DbSet<Podkategoria> Podkategoria { get; set; }
         public DbSet<Produkt> Produkt { get; set; }
         public DbSet<Kupon> Kupon { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

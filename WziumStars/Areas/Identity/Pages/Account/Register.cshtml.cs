@@ -60,6 +60,33 @@ namespace WziumStars.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Imię")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Nazwisko")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Kraj")]
+            public string Country { get; set; }
+
+            [Display(Name = "Miejscowość")]
+            public string City { get; set; }
+
+            [Display(Name = "Ulica")]
+            public string Street { get; set; }
+
+            [Display(Name = "Numer domu")]
+            public string HouseNumber { get; set; }
+
+            [Display(Name = "Numer mieszkania")]
+            public string ApartmentNumber { get; set; }
+
+            [Display(Name = "Kod pocztowy")]
+            public string PostalCode { get; set; }
+
+            [Display(Name = "Telefon")]
+            public string PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
