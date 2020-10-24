@@ -19,7 +19,7 @@
         {
             @foreach (var item in Model)
             {
-                <a asp-action="Details" asp-route-Id="@item.Id" class="recommend">
+                <a asp-action="Szczegoly" asp-route-Id="@item.Id" class="recommend">
                     <img src="@Html.DisplayFor(m => item.Avatar)" alt="photo">
                     <div class="goldColor">@Html.DisplayFor(m => item.Name)</div>
                     <div style="font-size: 15px; color: black; font-weight:500;" class="text-truncate">@Html.DisplayFor(m => item.Description)</div>

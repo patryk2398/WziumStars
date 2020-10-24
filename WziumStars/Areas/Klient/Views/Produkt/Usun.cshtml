@@ -1,0 +1,26 @@
+﻿@model WziumStars.Models.ViewModels.ProduktViewModel
+@using WziumStars.Extensions
+@{
+    ViewData["Title"] = "Usun";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12 col-md-10 offset-md-1 mb-5">
+    <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Usuń</h1>
+    <hr />
+    <form asp-action="Usun" class="col-12 col-md-10 offset-md-1 mb-5">
+        <div class="row col-12" style="font-family:'Lucida Sans Unicode';">
+            <img src="@Model.Produkt.Avatar" style="width:100%" class="col-6" />
+            <div class="col-6">
+                <h2 class="col-12">@Model.Produkt.Name</h2>
+                <label class="col-12">@Model.Produkt.Description</label>
+                <h2 class="col-12 mb-5">@Model.Produkt.Price,00zł</h2>
+                <div class="form-group row">
+                    <input type="submit" value="USUŃ" class="goldButton col-5" />
+                    <a asp-action="Index" class="brownButton col-5 offset-2">POWRÓT</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

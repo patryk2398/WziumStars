@@ -185,5 +185,72 @@ namespace WziumStars.Areas.Klient.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        //GET - DETAILS
+        public async Task<IActionResult> Szczegoly(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProduktVM.Produkt = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
+            ProduktVM.Podkategoria = await _db.Podkategoria.Where(s => s.CategoryId == ProduktVM.Produkt.CategoryId).ToListAsync();
+
+            if (ProduktVM.Produkt == null)
+            {
+                return NotFound();
+            }
+
+            return View(ProduktVM);
+        }
+
+        //GET - DELETE
+        public async Task<IActionResult> Usun(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProduktVM.Produkt = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
+            ProduktVM.Podkategoria = await _db.Podkategoria.Where(s => s.CategoryId == ProduktVM.Produkt.CategoryId).ToListAsync();
+
+            if (ProduktVM.Produkt == null)
+            {
+                return NotFound();
+            }
+
+            return View(ProduktVM);
+        }
+
+        //POST - DELETE
+        [HttpPost, ActionName("Usun")]
+        public async Task<IActionResult> UsunPOST(int? id)
+        {
+            var produkt = await _db.Produkt.FindAsync(id);
+
+            if (produkt == null)
+            {
+                return View();
+            }
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            var uploads = Path.Combine(webRootPath, "imgProdukt");
+            int count = produkt.Images.Count(f => f == '|');
+            for (int i = 0; i < count; i++)
+            {
+                string[] array = produkt.Images.Split('|');
+                var imagePath = Path.Combine(webRootPath, array[i].TrimStart('\\'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            _db.Produkt.Remove(produkt);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
