@@ -28,7 +28,7 @@ bld/
 [Ll]og/
 
 # Ignore img folder with flower images
-img/
+imgProdukt/
 
 #appsettings.json
 appsettings.json
