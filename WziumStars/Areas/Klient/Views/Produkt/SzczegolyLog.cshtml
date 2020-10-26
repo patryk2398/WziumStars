@@ -1,8 +1,8 @@
-﻿@model WziumStars.Models.AnonimowyKoszyk
+﻿@model WziumStars.Models.Koszyk
 @using WziumStars.Extensions
 @using WziumStars.Utility
 @{
-    ViewData["Title"] = "Szczegoly";
+    ViewData["Title"] = "SzczegolyLog";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,6 @@
                     <span class="col-2 offset-2 p-2">Ilość: </span>
                     <span class="col-1 p-2">szt.</span>
                 </div>
-                &nbsp;&nbsp;&nbsp;<span asp-validation-for="Count" class="text-danger"></span>
                 <div class="ml-3">
                     <button type="submit" value="Add to Cart" class="goldButton"><i class="fas fa-shopping-cart"></i> DODAJ DO KOSZYKA</button>
                 </div>

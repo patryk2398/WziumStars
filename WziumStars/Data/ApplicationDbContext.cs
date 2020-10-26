@@ -19,5 +19,7 @@ namespace WziumStars.Data
         public DbSet<Produkt> Produkt { get; set; }
         public DbSet<Kupon> Kupon { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Koszyk> Koszyk { get; set; }
+        public DbSet<AnonimowyKoszyk> AnonimowyKoszyk { get; set; }
     }
 }

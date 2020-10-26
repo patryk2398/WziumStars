@@ -11,5 +11,7 @@ namespace WziumStars.Utility
 
         public const string AdminEndUser = "Admin";
         public const string CustomerEndUser = "Customer";
+        public const string ssShoppingCartCount = "ssCartCount";
+        public const string ssCouponCode = "ssCouponCode";
     }
 }

@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WziumStars.Data;
+using WziumStars.Extensions;
 using WziumStars.Models;
 using WziumStars.Models.ViewModels;
 using WziumStars.Utility;
@@ -186,23 +190,150 @@ namespace WziumStars.Areas.Klient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult CheckAnonymousUserOrIdentityUser(Produkt prod)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                return RedirectToAction("SzczegolyLog", new { id = prod.Id });
+            }
+            else
+            {
+                return RedirectToAction("Szczegoly", new { id = prod.Id });
+            }
+        }
+
         //GET - DETAILS
-        public async Task<IActionResult> Szczegoly(int? id)
+        public async Task<IActionResult> SzczegolyLog(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            ProduktVM.Produkt = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
-            ProduktVM.Podkategoria = await _db.Podkategoria.Where(s => s.CategoryId == ProduktVM.Produkt.CategoryId).ToListAsync();
+            var ProduktFromDb = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).Where(m => m.Id == id).FirstOrDefaultAsync();
 
-            if (ProduktVM.Produkt == null)
+            Koszyk cartObj = new Koszyk()
+            {
+                Produkt = ProduktFromDb,
+                ProduktId = ProduktFromDb.Id
+            };
+            return View(cartObj);
+        }
+
+        //GET - DETAILS
+        public async Task<IActionResult> Szczegoly(Produkt prod)
+        {
+            if (prod == null)
             {
                 return NotFound();
             }
 
-            return View(ProduktVM);
+            var ProduktFromDb = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).Where(m => m.Id == prod.Id).FirstOrDefaultAsync();
+
+            AnonimowyKoszyk cartObj = new AnonimowyKoszyk()
+            {
+                Produkt = ProduktFromDb,
+                ProduktId = ProduktFromDb.Id
+            };
+            return View(cartObj);
+        }
+
+        //POST - DETAILS
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SzczegolyLog(Koszyk cart)
+        {   
+                cart.Id = 0;
+                if (ModelState.IsValid)
+                {
+                    var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+                    var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    cart.ApplicationUserId = claim.Value;
+                    cart.DateCreated = DateTime.Now;    
+
+                    Koszyk cartFromDb = await _db.Koszyk.Where(c => c.ApplicationUserId == cart.ApplicationUserId
+                                              && c.ProduktId == cart.ProduktId).FirstOrDefaultAsync();
+
+                    if (cartFromDb == null)
+                    {
+                        await _db.Koszyk.AddAsync(cart);
+                    }
+                    else
+                    {
+                        cartFromDb.Count = cartFromDb.Count + cart.Count;
+                    }
+                    await _db.SaveChangesAsync();
+
+                    var count = _db.Koszyk.Where(c => c.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
+                    HttpContext.Session.SetInt32(SD.ssShoppingCartCount, count);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    var produktFromDb = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).Where(m => m.Id == cart.ProduktId).FirstOrDefaultAsync();
+
+                    Koszyk cartObject = new Koszyk()
+                    {
+                        Produkt = produktFromDb,
+                        ProduktId = produktFromDb.Id
+                    };
+                    return View(cartObject);
+                }
+        }
+
+        ////POST - DETAILS
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Szczegoly(AnonimowyKoszyk cart)
+        {
+            cart.Id = 0;
+            if (ModelState.IsValid)
+            {
+                string cardId = Request.Cookies["cartId"];
+                if(cardId == null)
+                {
+                    Guid guid = Guid.NewGuid();
+                    CookieOptions cookieOptions = new CookieOptions();
+                    cookieOptions.Expires = DateTime.Now.AddMonths(6);
+                    Response.Cookies.Append("cartId", guid.ToString(), cookieOptions);
+                    cardId = guid.ToString();
+                }
+
+                cart.cartId = cardId;
+                cart.DateCreated = DateTime.Now;
+
+                AnonimowyKoszyk cartFromDb = await _db.AnonimowyKoszyk.Where(c => c.cartId == cart.cartId
+                                          && c.ProduktId == cart.ProduktId).FirstOrDefaultAsync();
+
+                if (cartFromDb == null)
+                {
+                    await _db.AnonimowyKoszyk.AddAsync(cart);
+                }
+                else
+                {
+                    cartFromDb.Count = cartFromDb.Count + cart.Count;
+                }
+                await _db.SaveChangesAsync();
+
+                var count = _db.AnonimowyKoszyk.Where(c => c.cartId == cart.cartId).ToList().Count;
+                HttpContext.Session.SetInt32(SD.ssShoppingCartCount, count);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var produktFromDb = await _db.Produkt.Include(m => m.Category).Include(m => m.SubCategory).Where(m => m.Id == cart.ProduktId).FirstOrDefaultAsync();
+
+                AnonimowyKoszyk cartObject = new AnonimowyKoszyk()
+                {
+                    Produkt = produktFromDb,
+                    ProduktId = produktFromDb.Id
+                };
+                return View(cartObject);
+            }
         }
 
         //GET - DELETE

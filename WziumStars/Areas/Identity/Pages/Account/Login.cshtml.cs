@@ -11,6 +11,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using WziumStars.Data;
+using Microsoft.EntityFrameworkCore;
+using WziumStars.Models;
+using Microsoft.AspNetCore.Http;
+using WziumStars.Utility;
+using System.Security.Claims;
 
 namespace WziumStars.Areas.Identity.Pages.Account
 {
@@ -20,14 +26,17 @@ namespace WziumStars.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _db;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         [BindProperty]
@@ -82,6 +91,49 @@ namespace WziumStars.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _db.Users.Where(u => u.Email == Input.Email).FirstOrDefaultAsync();
+
+                    string cardId = Request.Cookies["cartId"];
+                    List<AnonimowyKoszyk> listAnonimowyKoszyk = await _db.AnonimowyKoszyk.Where(u => u.cartId == cardId).ToListAsync();
+                    if(listAnonimowyKoszyk.Count > 0)
+                    {
+                        foreach (var item in listAnonimowyKoszyk)
+                        {
+                            Koszyk cartFromDb = await _db.Koszyk.Where(c => c.ApplicationUserId == user.Id
+                                              && c.ProduktId == item.ProduktId).FirstOrDefaultAsync();
+                            if (cartFromDb == null)
+                            {
+                                Koszyk koszyk = new Koszyk();
+                                koszyk.Id = 0;
+                                koszyk.ProduktId = item.ProduktId;
+                                koszyk.ApplicationUserId = user.Id;
+                                koszyk.Count = item.Count;
+                                koszyk.DateCreated = item.DateCreated;
+                                await _db.Koszyk.AddAsync(koszyk);
+                            }
+                            else
+                            {
+                                Koszyk koszyk = new Koszyk();
+                                koszyk.Id = 0;
+                                koszyk.ProduktId = item.ProduktId;
+                                koszyk.ApplicationUserId = user.Id;
+                                koszyk.Count = item.Count;
+                                koszyk.DateCreated = item.DateCreated;
+                                cartFromDb.Count = cartFromDb.Count + koszyk.Count;
+                            }
+                            _db.AnonimowyKoszyk.Remove(item);
+                        }
+                        CookieOptions cookieOptions = new CookieOptions();
+                        cookieOptions.Expires = DateTime.Now.AddDays(-1);
+                        Response.Cookies.Append("cartId", cardId, cookieOptions);
+                        await _db.SaveChangesAsync();
+                    }
+
+                    List <Koszyk> listKoszyk = await _db.Koszyk.Where(u => u.ApplicationUserId == user.Id).ToListAsync();
+                    HttpContext.Session.SetInt32(SD.ssShoppingCartCount, listKoszyk.Count);
+
+                    
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

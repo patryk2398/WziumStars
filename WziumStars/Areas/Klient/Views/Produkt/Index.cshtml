@@ -19,12 +19,12 @@
         {
             @foreach (var item in Model)
             {
-                <a asp-action="Szczegoly" asp-route-Id="@item.Id" class="recommend">
+                <button onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Produkt", item)'" class="recommend">
                     <img src="@Html.DisplayFor(m => item.Avatar)" alt="photo">
                     <div class="goldColor">@Html.DisplayFor(m => item.Name)</div>
                     <div style="font-size: 15px; color: black; font-weight:500;" class="text-truncate">@Html.DisplayFor(m => item.Description)</div>
                     <div style="color: black">@Html.DisplayFor(m => item.Price) PLN</div>
-                </a>
+                </button>
             }
         }
         else
