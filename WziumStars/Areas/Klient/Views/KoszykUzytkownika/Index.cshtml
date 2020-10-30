@@ -1,0 +1,124 @@
+﻿@model WziumStars.Models.ViewModels.OrderDetailsKoszyk
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" class="mt-5">
+    @if (Model.listCart.Count > 0)
+    {
+        <input id="userId" asp-for="@Model.listCart[0].ApplicationUserId" hidden />
+        <div class="mb-5">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header text-light" style="background-color:#534741;">
+                        <div class="col-6">
+                            <i class="fa fa-shopping-cart"></i> &nbsp;
+                            Koszyk
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var item in Model.listCart)
+                        {
+                            <div class="row">
+                                <div class=" d-lg-block col-lg-2 text-center py-2">
+                                    <img src="@item.Produkt.Avatar" class="rounded" width="100" height="100" />
+                                </div>
+                                <div class="col-12 text-sm-center col-lg-5 text-lg-left" style="margin-top:35px;">
+                                    <h4><strong>@item.Produkt.Name</strong></h4>
+                                </div>
+                                <div class="col-12 text-sm-center col-lg-5 text-lg-right row" style="margin-top:35px;">
+                                    <div class="col-4 text-md-right" style="padding-top:5px;">
+                                        <h5><strong>@item.Produkt.Price<span>,00 zł</span> <span class="text-muted">x</span> @item.Count </strong></h5>
+                                    </div>
+                                    <div class="col-6 col-sm-4 col-lg-6">
+                                        <div class="float-right mx-1">
+                                            <button type="submit" class="goldButton py-1" asp-action="Plus" asp-route-cartId="@item.Id">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="float-right mx-1">
+                                            <button type="submit" class="brownButton py-1" asp-action="Minus" asp-route-cartId="@item.Id">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 col-sm-4 col-lg-2 text-right">
+                                        <button type="submit" class="btn btn-outline-dark" asp-action="Remove" asp-route-cartId="@item.Id">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                        <div class="row my-1">
+                            <div class="col-3">
+                                <label asp-for="@Model.OrderHeader.Delivery"></label>
+                            </div>
+                            <div class="col-9">
+                                <input type="radio" name="Delivery" value="Poczta" class="form-control" checked/>Poczta
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-5">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <input asp-for="@Model.OrderHeader.CouponCode" id="txtCouponCode" class="form-control" placeholder="Kupon..." />
+                                    </div>
+                                    <div class="col-5" style="margin-top:2px;">
+                                        <button type="submit" class="btn btn-sm form-control btn-outline-secondary" id="btnCoupon" asp-action="AddCoupon">
+                                            Zatwierdź
+                                        </button>
+                                        <button type="submit" class="btn btn-sm form-control btn-outline-danger" style="display:none" id="btnRemoveCoupon" asp-action="RemoveCoupon">
+                                            Usuń
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 offset-md-1 col-lg-4 offset-lg-3 pr-4">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <span class="goldColor"> Razem </span>
+                                        <strong class="goldColor"><span id="txtOrderTotal">@Model.OrderHeader.OrderTotal<span>,00 zł</span></span></strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="brownButton col-3">POWRÓT</a>
+                            <a asp-action="Podsumowanie" asp-area="Klient" asp-controller="KoszykUzytkownika" class="goldButton col-3 offset-6 text-center">DALEJ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-10 offset-1 mb-5">
+            <h4> Brak produktów w koszyku...</h4>
+            <div class="mt-5">
+                <a asp-action="Index" asp-controller="Home" class="brownButton">POWRÓT DO STRONY GŁÓWNEJ</a>
+            </div>
+        </div>
+    }
+</form>
+@section Scripts
+{
+    <script>
+        $(function () {
+            var couponCode = document.getElementById("txtCouponCode").value;
+            if (couponCode.length > 0) {
+                document.getElementById('btnCoupon').style.display = 'none';
+                document.getElementById('btnRemoveCoupon').style.display = '';
+            }
+            else {
+                document.getElementById('btnCoupon').style.display = '';
+                document.getElementById('btnRemoveCoupon').style.display = 'none';
+            }
+        });
+    </script>
+}

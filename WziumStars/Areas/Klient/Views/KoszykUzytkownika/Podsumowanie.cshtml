@@ -1,0 +1,215 @@
+﻿@model WziumStars.Models.ViewModels.OrderDetailsKoszyk
+@using Microsoft.Extensions.Options
+@{
+    ViewData["Title"] = "Podsumowanie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" class="mt-5">
+    @if (Model.listCart.Count > 0)
+    {
+        <br />
+        <input id="userId" asp-for="@Model.listCart[0].ApplicationUserId" hidden />
+        <div class="backgroundWhiteBorder">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header text-light" style="background-color:#534741;">
+                        <div class="col-6">
+                            <i class="fa fa-shopping-cart"></i> &nbsp;
+                            Podsumowanie zamówienia
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container rounded p-2">
+                            <div class="row">
+                                <div class="col-12 col-lg-6 pb-4">
+                                    <div class="row">
+                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="goldColor">Szczegóły odbioru:</span>
+                                        </h4>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.FirstName"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.FirstName" id="FirstName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.LastName"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.LastName" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.Firm"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.Firm" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.City"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.City" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.Street"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.Street" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.HouseNumber"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.HouseNumber" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.ApartmentNumber"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.ApartmentNumber" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.PostalCode"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PostalCode" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.PhoneNumber"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.PhoneNumber" id="txtPhone" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.Email"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.Email" id="txtPhone" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.Comments"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <textarea asp-for="@Model.OrderHeader.Comments" style="height:100px;" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-5 offset-lg-1">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="goldColor">Podsumowanie zamówienia:</span>
+                                    </h4>
+                                    <ul class="list-group mb-3">
+                                        @{ var total = 0.0;}
+
+                                        @foreach (var details in Model.listCart)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="my-0">@details.Produkt.Name</h6>
+                                                    <small class="text-muted">Ilość: @details.Count</small>
+                                                </div>
+                                                <span class="text-muted">@(details.Produkt.Price * details.Count),00 zł</span>
+                                                @{ total += (details.Produkt.Price * details.Count); }
+                                            </li>
+                                        }
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            <div class="text-danger">
+                                                <h6 class="my-0">Koszt dostawy</h6>
+                                            </div>
+                                            <span class="text-danger">+@(Model.OrderHeader.DeliveryCost),00 zł</span>
+                                        </li>
+                                        @if (Model.OrderHeader.CouponCode != null)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div class="text-success">
+                                                    <h6 class="my-0">Kod promocyjny</h6>
+                                                    <small class="text-success">@Model.OrderHeader.CouponCode</small>
+                                                </div>
+                                                <span class="text-success">-@(Model.OrderHeader.CouponCodeDiscount),00 zł</span>
+                                            </li>
+                                        }
+                                        <li class="list-group-item d-flex justify-content-between bg-light">
+                                            <strong class="goldColor">Razem (PLN)</strong>
+                                            <strong class="goldColor">@(Model.OrderHeader.OrderTotal),00 zł</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4>Metoda płatności</h4>
+                                    <div class="col-9">
+                                        <input type="radio" name="payMethod" value="PayU" class="form-control" checked />PayU
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <a asp-area="Klient" asp-controller="KoszykUzytkownika" asp-action="Index" class="brownButton col-3">POWRÓT</a>
+                            <button type="submit" id="btnPlaceOrder" onclick="return validateInput()" class="goldButton col-3 offset-6 text-center">ZAPŁAĆ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div> Brak produktów w koszyku...</div>
+    }
+</form>
+
+@section Scripts{ 
+    <script>
+        function validateInput() {
+            var time = document.getElementById("timepicker").value;
+            var dt = document.getElementById("datepicker").value;
+            var FirstName = document.getElementById("FirstName").value;
+            var phone = document.getElementById("txtPhone").value;
+            if (FirstName.toString().length == 0) {
+                alert("Proszę wpisać imię")
+                return false;
+            }
+            else if (time.toString().length == 0) {
+                alert("Please select pickup time")
+                return false;
+            }
+            else if (name.toString().length == 0) {
+                alert("Please enter pickup name")
+                return false;
+            }
+            else if (phone.toString().length == 0) {
+                alert("Please enter a phone number")
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
+}
+

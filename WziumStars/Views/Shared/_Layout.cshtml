@@ -56,9 +56,9 @@
                     }
                     else
                     {
-                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" id="shopping_cart">
+                        <button onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Home")'">
                             <i style="font-size:36px;" class="fas fa-shopping-cart"></i>(0)
-                        </a>
+                        </button>
                     }
                 </div>
             </div>

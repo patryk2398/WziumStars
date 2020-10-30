@@ -21,5 +21,7 @@ namespace WziumStars.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Koszyk> Koszyk { get; set; }
         public DbSet<AnonimowyKoszyk> AnonimowyKoszyk { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
     }
 }

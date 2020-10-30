@@ -58,11 +58,11 @@ namespace WziumStars.Controllers
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (claim != null)
             {
-                return RedirectToAction("Index", "Koszyk");
+                return RedirectToAction("Index", "KoszykUzytkownika");
             }
             else
             {
-                return RedirectToAction("Index", "AnonimowyKoszyk");
+                return RedirectToAction("Index", "Koszyk");
             }
         }
 
