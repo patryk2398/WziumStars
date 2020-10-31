@@ -46,10 +46,10 @@
                                     </div>
                                     <div class="row my-1">
                                         <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.Firm"></label>
+                                            <label asp-for="@Model.OrderHeader.Company"></label>
                                         </div>
                                         <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.Firm" id="txtName" type="text" class="form-control" />
+                                            <input asp-for="@Model.OrderHeader.Company" id="txtName" type="text" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="row my-1">
@@ -66,14 +66,6 @@
                                         </div>
                                         <div class="col-9">
                                             <input asp-for="@Model.OrderHeader.Street" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.HouseNumber"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.HouseNumber" id="txtName" type="text" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="row my-1">
@@ -117,7 +109,72 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label asp-for="@Model.OrderHeader.AnotherDeliveryAddress"></label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.OrderHeader.AnotherDeliveryAddress" id="AnotherDeliveryAddress" type="checkbox" onclick="anotherAddress()" class="form-control" />
+                                    </div>
+                                </div>
+                                <div id="AnotherAddress" style="display: none;">
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryFirstName"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryFirstName" id="FirstName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryLastName"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryLastName" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryCompany"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryCompany" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryCity"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryCity" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryStreet"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryStreet" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryApartmentNumber"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryApartmentNumber" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderHeader.DeliveryPostalCode"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="@Model.OrderHeader.DeliveryPostalCode" id="txtName" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-12 col-lg-5 offset-lg-1">
                                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                                         <span class="goldColor">Podsumowanie zamówienia:</span>
@@ -208,6 +265,16 @@
             }
             else {
                 return true;
+            }
+        }
+
+        function anotherAddress() {
+            var checkBox = document.getElementById("AnotherDeliveryAddress");
+            var block = document.getElementById("AnotherAddress");
+            if (checkBox.checked == true) {
+                block.style.display = "block";
+            } else {
+                block.style.display = "none";
             }
         }
     </script>

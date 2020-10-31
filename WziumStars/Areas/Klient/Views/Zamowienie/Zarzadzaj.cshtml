@@ -1,0 +1,152 @@
+﻿@model WziumStars.Models.ViewModels.OrderListViewModel
+@using WziumStars.Utility
+@{
+    ViewData["Title"] = "Zarzadzaj";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="get">
+    <div class="col-10 offset-1">
+        <div class="row">
+            <div class="col-6">
+                <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Historia zamówień</h1>
+            </div>
+        </div>
+        <hr />
+        <div class="order border-secondary" style="height:60px;">
+            <div class="row container">
+                <div class="col-11">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-4">
+                            @Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @placeholder = "Imię..." } })
+                        </div>
+                        <div class="col-4">
+                            @Html.Editor("searchPhone", new { htmlAttributes = new { @class = "form-control", @placeholder = "Telefon..." } })
+                        </div>
+                        <div class="col-4">
+                            @Html.Editor("searchEmail", new { htmlAttributes = new { @class = "form-control", @placeholder = "Email..." } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="row" style="padding-top:10px;">
+                        <button type="submit" name="submit" value="Search" class="brownButton py-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="overflow-x: auto">
+            @if (Model.Orders.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            @Html.DisplayNameFor(m => m.Orders[0].OrderHeader.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Orders[0].OrderHeader.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Orders[0].OrderHeader.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Orders[0].OrderHeader.ApplicationUser.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Orders[0].OrderHeader.OrderTotal)
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.Orders)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.OrderHeader.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.OrderHeader.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.OrderHeader.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.OrderHeader.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.OrderHeader.OrderTotal)
+                            </td>
+                            <td>
+                                <button type="button" class="goldButton anchorDetail" data-id="@item.OrderHeader.Id" data-toggle="modal">
+                                    <i class="far fa-list-alt"></i>&nbsp;SZCZEGÓŁY
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div page-model="@Model.PagingInfo" page-classes-enable="true" page-class="btn border"
+                     page-class-normal="btn btn-light" page-class-selected="btn btn-info active"
+                     class="btn-group float-right">
+                </div>
+                <br />
+            }
+            else
+            {
+                <p>Brak kuponów...</p>
+            }
+        </div>
+    </div>
+</form>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog-centered modal-dialog" style="max-width: 90%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-light" style="background-color: #534741">
+                    <div class="col-10 offset-1">
+                        <center><h5 class="modal-title">Szczegóły zamówienia</h5></center>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body justify-content-center" id="myModalContent">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @section scripts
+{
+        <script>
+            var PostBackURL = '/Klient/Zamowienie/GetOrderDetails';
+            var OrderStatusURL = '/Klient/Zamowienie/GetOrderStatus';
+
+            $(function () {
+                $(".anchorDetail").click(function () {
+                    var $buttonClicked = $(this);
+                    var id = $buttonClicked.attr('data-id');
+
+                    $.ajax({
+                        type: "GET",
+                        url: PostBackURL,
+                        contentType: "application/json; charset=utf-8",
+                        data: { "Id": id },
+                        cache: false,
+                        datatyype: "json",
+                        success: function (data) {
+                            $('#myModalContent').html(data);
+                            $('#myModal').modal('show');
+                        },
+                        error: function () {
+                            alert("Nie udało się załadować zawartości");
+                        }
+                    })
+                })
+            })
+        </script>
+    }
+

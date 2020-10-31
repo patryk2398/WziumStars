@@ -183,6 +183,9 @@ namespace WziumStars.Areas.Klient.Controllers
             detailsCard.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             detailsCard.OrderHeader.OrderDate = DateTime.Now;
             detailsCard.OrderHeader.Status = SD.PaymentStatusPending;
+            detailsCard.OrderHeader.DeliveryMethod = "Poczta";
+            detailsCard.OrderHeader.Country = "Polska";
+            detailsCard.OrderHeader.DeliveryCountry = "Polska";
 
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             _db.OrderHeader.Add(detailsCard.OrderHeader);

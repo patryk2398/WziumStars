@@ -38,12 +38,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Klient" asp-controller="Produkt" asp-action="Index">Produkty</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Kupon" asp-action="Index">Kupony</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Uzytkownik" asp-action="Index">Użytkownicy</a>
-                        </li>
+                        @if (User.IsInRole(SD.AdminEndUser))
+                        {
+                            <li>
+                                <label for="drop-5" class="toggle">ADMIN <i class="fas fa-caret-down"></i></label>
+                                <a href="#">ADMIN <i class="fas fa-caret-down"></i></a>
+                                <input type="checkbox" id="drop-5" />
+                                <ul>
+                                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Kupon" asp-action="Index">Kupony</a></li>
+                                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Uzytkownik" asp-action="Index">Użytkownicy</a></li>
+                                    <li><a asp-area="Klient" asp-controller="Zamowienie" asp-action="Zarzadzaj"><span>ZAMÓWIENIA</span></a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
                     {

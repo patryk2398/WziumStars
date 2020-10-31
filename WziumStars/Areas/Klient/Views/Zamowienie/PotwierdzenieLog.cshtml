@@ -1,0 +1,33 @@
+﻿@model WziumStars.Models.ViewModels.OrderDetailsViewModel
+@{
+    ViewData["Title"] = "Potwierdzenie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-10 offset-1 mb-5">
+    <div class="row p-0">
+        <div class="col-6 p-0">
+            <h1 class="goldColor">Zamówienie przyjęte</h1>
+        </div>
+        <div class="col-6 text-right pt-3">
+            <a asp-controller="Home" asp-action="Index" class="goldButton">KONTYNUUJ ZAKUPY</a>
+        </div>
+    </div>
+    <hr />
+    @if (Model.OrderHeader != null)
+    {
+        <div class="py-3 brownColor">
+            Twoje zamówienie zostało przyjęte! Poniżej umieszczono podsumowanie Twojego zamówienia.
+            <br />
+            W razie jakichkolwiek pytań skontaktuj się z nami.
+        </div>
+        <partial name="_IndividualOrderDetails" model="Model" />
+    }
+    else
+    {
+        <div class="text-danger">
+            Błąd... Skontaktuj się z nami.
+        </div>
+    }
+</div>
+

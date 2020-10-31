@@ -54,19 +54,19 @@ namespace Florist.Data
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", tokenType + " " + accessToken);
 
                 using (var content = new StringContent(
-                    "{  \"notifyUrl\": \"https://localhost:44361/Klient/Zamowienie/Potwierdzenie/" + detailsCard.OrderHeader.Id+"\", " +
+                    "{  \"notifyUrl\": \"https://localhost:44361/Klient/Zamowienie/PotwierdzenieLog/" + detailsCard.OrderHeader.Id+"\", " +
                     " \"customerIp\": \"" + ip + "\",  " +
                     "\"merchantPosId\": \"395609\",  " +
                     "\"description\": \"Florist shop\",  " +
                     "\"currencyCode\": \"PLN\",  " +
                     "\"totalAmount\": \"" + (detailsCard.OrderHeader.OrderTotal * 100).ToString() + "\",  " +
-                    " \"continueUrl\": \"https://localhost:44361/Klient/Zamowienie/Potwierdzenie/" + detailsCard.OrderHeader.Id+"\",  " +
+                    " \"continueUrl\": \"https://localhost:44361/Klient/Zamowienie/PotwierdzenieLog/" + detailsCard.OrderHeader.Id+"\",  " +
                     "\"buyer\": " +
                     "{" +
-                    "\"email\": \"" + detailsCard.OrderHeader.ApplicationUser.Email + "\"," +
+                    "\"email\": \"" + detailsCard.OrderHeader.Email + "\"," +
                     "\"phone\": \"" + detailsCard.OrderHeader.PhoneNumber + "\"," +
-                    "\"firstName\": \"" + detailsCard.OrderHeader.ApplicationUser.FirstName + "\"," +
-                    "\"lastName\": \"" + detailsCard.OrderHeader.ApplicationUser.LastName + "\"" +
+                    "\"firstName\": \"" + detailsCard.OrderHeader.FirstName + "\"," +
+                    "\"lastName\": \"" + detailsCard.OrderHeader.LastName + "\"" +
                     "}," +
                     "\"products\": " +
                     "[" + products + "]}", System.Text.Encoding.Default, "application/json"))

@@ -94,7 +94,6 @@ namespace WziumStars.Areas.Klient.Controllers
             detailsCard.OrderHeader.LastName = applicationUser.LastName;
             detailsCard.OrderHeader.City = applicationUser.City;
             detailsCard.OrderHeader.Street = applicationUser.Street;
-            detailsCard.OrderHeader.HouseNumber = applicationUser.HouseNumber;
             detailsCard.OrderHeader.ApartmentNumber = applicationUser.ApartmentNumber;
             detailsCard.OrderHeader.PostalCode = applicationUser.PostalCode;
             detailsCard.OrderHeader.Email = applicationUser.Email;
@@ -196,6 +195,8 @@ namespace WziumStars.Areas.Klient.Controllers
             detailsCard.OrderHeader.UserId = claim.Value;
             detailsCard.OrderHeader.Status = SD.PaymentStatusPending;
             detailsCard.OrderHeader.ApplicationUser = _db.ApplicationUser.Where(m => m.Id == claim.Value).FirstOrDefault();
+            detailsCard.OrderHeader.DeliveryMethod = "Poczta";
+            detailsCard.OrderHeader.Country = "Polska";
 
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             _db.OrderHeader.Add(detailsCard.OrderHeader);

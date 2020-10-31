@@ -48,5 +48,9 @@ namespace WziumStars.Models
 
         [Display(Name = "Cena")]
         public double Price { get; set; }
+
+        [Required]
+        [Display(Name = "Ilość")]
+        public int Count { get; set; }
     }
 }

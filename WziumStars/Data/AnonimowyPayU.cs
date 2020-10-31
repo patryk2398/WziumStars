@@ -63,10 +63,10 @@ namespace WziumStars.Data
                     " \"continueUrl\": \"https://localhost:44361/Klient/Zamowienie/Potwierdzenie/" + detailsCard.OrderHeader.Id + "\",  " +
                     "\"buyer\": " +
                     "{" +
-                    "\"email\": \"" + detailsCard.OrderHeader.ApplicationUser.Email + "\"," +
+                    "\"email\": \"" + detailsCard.OrderHeader.Email + "\"," +
                     "\"phone\": \"" + detailsCard.OrderHeader.PhoneNumber + "\"," +
-                    "\"firstName\": \"" + detailsCard.OrderHeader.ApplicationUser.FirstName + "\"," +
-                    "\"lastName\": \"" + detailsCard.OrderHeader.ApplicationUser.LastName + "\"" +
+                    "\"firstName\": \"" + detailsCard.OrderHeader.FirstName + "\"," +
+                    "\"lastName\": \"" + detailsCard.OrderHeader.LastName + "\"" +
                     "}," +
                     "\"products\": " +
                     "[" + products + "]}", System.Text.Encoding.Default, "application/json"))

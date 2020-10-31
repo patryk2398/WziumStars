@@ -12,7 +12,6 @@ namespace WziumStars.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]
@@ -45,22 +44,49 @@ namespace WziumStars.Models
         public string City { get; set; }
 
         [Required]
-        [Display(Name = "Ulica")]
+        [Display(Name = "Ulica i numer budynku")]
         public string Street { get; set; }
 
-        [Required]
-        [Display(Name = "Nr domu")]
-        public string HouseNumber { get; set; }
-
-        [Display(Name = "Nr mieszkania")]
+        [Display(Name = "Numer mieszkania")]
         public string ApartmentNumber { get; set; }
 
         [Required]
         [Display(Name = "Kod pocztowy")]
         public string PostalCode { get; set; }
 
-        [Display(Name = "firma")]
-        public string Firm { get; set; }
+        [Display(Name = "Firma")]
+        public string Company { get; set; }
+
+
+        [Display(Name = "Dostawa na inny adres")]
+        public bool AnotherDeliveryAddress { get; set; }
+
+        [Display(Name = "Imię")]
+        public string DeliveryFirstName { get; set; }
+
+        [Display(Name = "Nazwisko")]
+        public string DeliveryLastName { get; set; }
+
+        [Display(Name = "Kraj")]
+        public string DeliveryCountry { get; set; }
+
+        [Display(Name = "Stan")]
+        public string DeliveryState { get; set; }
+
+        [Display(Name = "Miejscowość")]
+        public string DeliveryCity { get; set; }
+
+        [Display(Name = "Ulica")]
+        public string DeliveryStreet { get; set; }
+
+        [Display(Name = "Numer mieszkania")]
+        public string DeliveryApartmentNumber { get; set; }
+
+        [Display(Name = "Kod pocztowy")]
+        public string DeliveryPostalCode { get; set; }
+
+        [Display(Name = "Firma")]
+        public string DeliveryCompany { get; set; }
 
 
 
@@ -89,10 +115,12 @@ namespace WziumStars.Models
         public string PayUId { get; set; }
 
         [Display(Name = "Dostawa")]
-        public string Delivery { get; set; }
+        public string DeliveryMethod { get; set; }
 
         [Display(Name = "Dostawa")]
         public double DeliveryCost { get; set; }
+
+        public string Paczkomat { get; set; }
 
         [Display(Name = "Metoda płatności")]
         public string PayMethod { get; set; }

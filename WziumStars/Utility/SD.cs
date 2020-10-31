@@ -15,9 +15,9 @@ namespace WziumStars.Utility
         public const string ssShoppingCartCount = "ssCartCount";
         public const string ssCouponCode = "ssCouponCode";
 
-        public const string StatusSubmitted = "PRZYJĘTO";
+        public const string StatusSubmitted = "PRZYJETO";
         public const string StatusInProcess = "W PRZYGOTOWANIU";
-        public const string StatusSent = "WYSŁANO";
+        public const string StatusSent = "WYSLANO";
         public const string StatusCompleted = "ODEBRANO";
         public const string StatusCancelled = "ANULOWANO";
 
