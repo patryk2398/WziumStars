@@ -41,7 +41,7 @@ namespace WziumStars.Areas.Admin.Controllers
             {
                 KategoriaList = await _db.Kategoria.ToListAsync(),
                 Podkategoria = new Models.Podkategoria(),
-                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+                PodkategoriaList = await _db.Podkategoria.ToListAsync()
             };
             return View(model);
         }
@@ -70,7 +70,7 @@ namespace WziumStars.Areas.Admin.Controllers
             {
                 KategoriaList = await _db.Kategoria.ToListAsync(),
                 Podkategoria = model.Podkategoria,
-                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
+                PodkategoriaList = await _db.Podkategoria.ToListAsync(),
                 StatusMessage = StatusMessage
             };
             return View(modelVM);
@@ -106,7 +106,7 @@ namespace WziumStars.Areas.Admin.Controllers
             {
                 KategoriaList = await _db.Kategoria.ToListAsync(),
                 Podkategoria = podkategoria,
-                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+                PodkategoriaList = await _db.Podkategoria.ToListAsync()
             };
             return View(model);
         }
@@ -135,7 +135,7 @@ namespace WziumStars.Areas.Admin.Controllers
             {
                 KategoriaList = await _db.Kategoria.ToListAsync(),
                 Podkategoria = model.Podkategoria,
-                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
+                PodkategoriaList = await _db.Podkategoria.ToListAsync(),
                 StatusMessage = StatusMessage
             };
             modelVM.Podkategoria.Id = id;
@@ -159,7 +159,7 @@ namespace WziumStars.Areas.Admin.Controllers
             {
                 KategoriaList = await _db.Kategoria.ToListAsync(),
                 Podkategoria = podkategoria,
-                PodkategoriaList = await _db.Podkategoria.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+                PodkategoriaList = await _db.Podkategoria.ToListAsync()
             };
             return View(model);
         }

@@ -5,16 +5,16 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Florist.Data;
+using WziumStars.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WziumStars.Data;
 using WziumStars.Models;
 using WziumStars.Models.ViewModels;
 using WziumStars.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace WziumStars.Areas.Klient.Controllers
 {
@@ -23,9 +23,11 @@ namespace WziumStars.Areas.Klient.Controllers
     {
         private ApplicationDbContext _db;
         private int PageSize = 2;
-        public ZamowienieController(ApplicationDbContext db)
+        private readonly IEmailSender _emailSender;
+        public ZamowienieController(ApplicationDbContext db, IEmailSender emailSender)
         {
             _db = db;
+            _emailSender = emailSender;
         }
 
         [Authorize]
@@ -63,7 +65,7 @@ namespace WziumStars.Areas.Klient.Controllers
                     }
                     else
                     {
-                        //await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == claim.Value).FirstOrDefault().Email, "Florist - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
+                        await _emailSender.SendEmailAsync(OrderHeader.Email, "Florist - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
 
                         OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
                         OrderHeader.Status = SD.StatusSubmitted;
@@ -111,7 +113,7 @@ namespace WziumStars.Areas.Klient.Controllers
                     }
                     else
                     {
-                        //await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == claim.Value).FirstOrDefault().Email, "Florist - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
+                        await _emailSender.SendEmailAsync(OrderHeader.Email, "Wzium Stars - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
 
                         OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
                         OrderHeader.Status = SD.StatusSubmitted;
@@ -261,9 +263,9 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusInProcess;
             await _db.SaveChangesAsync();
-            //await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-            //      Email, "Florist - Zamówienie nr " + orderHeader.Id.ToString() + " w produkcji",
-            //      "Twoje zamówienie własnie jest przygotowywane.");
+            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
+                  Email, "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " w produkcji",
+                  "Twoje zamówienie własnie jest przygotowywane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }
 
@@ -273,9 +275,9 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusSent;
             await _db.SaveChangesAsync();
-            //await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-            //       Email, "Florist - Zamówienie nr " + orderHeader.Id.ToString() + " gotowe do odbioru",
-            //       "Twoje zamówienie jest gotowe do odbioru.");
+            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
+                   Email, "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " zostało wysłane",
+                   "Twoje zamówienie zostało wysłane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }
 
@@ -285,9 +287,9 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusCancelled;
             await _db.SaveChangesAsync();
-            //await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-            //        Email, "Florist - Anulowanie zamówienia nr " + orderHeader.Id.ToString(),
-            //        "Twoje zamówienie zostało anulowane.");
+            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
+                    Email, "Wzium Stars - Anulowanie zamówienia nr " + orderHeader.Id.ToString(),
+                    "Twoje zamówienie zostało anulowane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }
     }

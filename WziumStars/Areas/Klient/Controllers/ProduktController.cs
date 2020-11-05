@@ -39,9 +39,9 @@ namespace WziumStars.Areas.Klient.Controllers
             };
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string subcategory)
         {
-            var Produkty = await _db.Produkt.ToListAsync();
+            var Produkty = await _db.Produkt.Where(s => s.SubCategory.Name == subcategory).ToListAsync();
             return View(Produkty);
         }
 
@@ -55,7 +55,6 @@ namespace WziumStars.Areas.Klient.Controllers
         public async Task<IActionResult> DodajPOST()
         {
             ProduktVM.Produkt.SubCategoryId = Convert.ToInt32(Request.Form["SubCategoryId"].ToString());
-            int test = Convert.ToInt32(Request.Form["SubCategoryId"].ToString());
             if (!ModelState.IsValid)
             {
                 return View();

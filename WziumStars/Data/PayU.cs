@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using WziumStars.Models.ViewModels;
 
-namespace Florist.Data
+namespace WziumStars.Data
 {
     public class PayU
     {
