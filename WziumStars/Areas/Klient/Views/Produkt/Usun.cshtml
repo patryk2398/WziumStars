@@ -5,20 +5,79 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-12 col-md-10 offset-md-1 mb-5">
-    <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Usuń</h1>
-    <hr />
-    <form asp-action="Usun" class="col-12 col-md-10 offset-md-1 mb-5">
-        <div class="row col-12" style="font-family:'Lucida Sans Unicode';">
-            <img src="@Model.Produkt.Avatar" style="width:100%" class="col-6" />
+<div class="paddingX">
+    <h1 class="mb-4">Usuń</h1>
+    <form asp-action="Usun">
+        <div class="row">
             <div class="col-6">
-                <h2 class="col-12">@Model.Produkt.Name</h2>
-                <label class="col-12">@Model.Produkt.Description</label>
-                <h2 class="col-12 mb-5">@Model.Produkt.Price,00zł</h2>
                 <div class="form-group row">
-                    <input type="submit" value="USUŃ" class="goldButton col-5" />
-                    <a asp-action="Index" class="brownButton col-5 offset-2">POWRÓT</a>
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.Name" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <input asp-for="Produkt.Name" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Produkt.Name" class="text-danger"></span>
                 </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.Description" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <textarea asp-for="Produkt.Description" id="mytextarea" class="form-control" rows="14"></textarea>
+                    </div>
+                    <span asp-validation-for="Produkt.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.Price" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <input asp-for="Produkt.Price" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Produkt.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.CategoryId" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <select asp-for="@Model.Produkt.CategoryId" id="CategoryId" asp-items="Model.Kategoria.ToSelectListItem(Model.Produkt.CategoryId)" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.SubCategoryId" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <select asp-for="@Model.Produkt.SubCategoryId" name="SubCategoryId" id="SubCategoryId" asp-items="@(new SelectList(string.Empty,"Id","Name"))" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.Count" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <input asp-for="Produkt.Count" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Produkt.Count" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-3">
+                        <label asp-for="Produkt.Images" class="control-label"></label>
+                    </div>
+                    <div class="col-lg-9 col-9">
+                        <input type="file" name="files" multiple class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-9 offset-3">
+                        <partial name="_DeleteAndBackButtonPartial" model="Model.Produkt.Id" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 offset-1">
+                <img src="@Model.Produkt.Avatar" style="width: 100%;" />
             </div>
         </div>
     </form>

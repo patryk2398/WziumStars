@@ -4,22 +4,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-6">
-        <h2>Lista kategorii</h2>
+<div class="paddingX">
+    <div class="row mb-4">
+        <div class="col-6">
+            <h1>Lista kategorii</h1>
+        </div>
+        <div class="col-6 text-right pt-3">
+            <partial name="_CreateButtonPartial" />
+        </div>
     </div>
-    <div class="col-6">
-        <partial name="_CreateButtonPartial" />
-    </div>
-    <div class="col-12">
+    <div>
         @if (Model.Count() > 0)
         {
-            <table class="table table-striped border">
+            <table class="table table-striped border grayTable">
                 <tr class="table-secondary">
                     <th>
                         @Html.DisplayNameFor(m => m.Name)
                     </th>
-                    <th></th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model)

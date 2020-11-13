@@ -76,7 +76,7 @@ namespace WziumStars.Models
         [Display(Name = "Miejscowość")]
         public string DeliveryCity { get; set; }
 
-        [Display(Name = "Ulica")]
+        [Display(Name = "Ulica i numer budynku")]
         public string DeliveryStreet { get; set; }
 
         [Display(Name = "Numer mieszkania")]

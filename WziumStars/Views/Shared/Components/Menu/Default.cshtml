@@ -2,12 +2,14 @@
 @foreach(var item in Model.KategoriaList)
 {
 <li>
-    <label for="drop-1" class="toggle">@item.Name <i class="fas fa-caret-down"></i></label>
+    <label for="drop-@item.Id" class="toggle">@item.Name.ToUpper() <i class="fas fa-caret-down"></i></label>
+    <a href="#">@item.Name.ToUpper() <i class="fas fa-caret-down"></i></a>
+    <input type="checkbox" id="drop-@item.Id" />
     <ul>
-        @foreach(var podkategoria in Model.PodkategoriaList.Where(c=>c.CategoryId == item.Id))
+        @foreach (var podkategoria in Model.PodkategoriaList.Where(c => c.CategoryId == item.Id))
         {
-            <li><a asp-action="Index" asp-controller="Produkt" asp-area="Klient" asp-route-subcategory="@podkategoria.Name">@podkategoria.Name</a></li>
-        }  
+            <li><a asp-action="Index" asp-controller="Produkt" asp-area="Klient" asp-route-subcategory="@podkategoria.Name">@podkategoria.Name.ToUpper()</a></li>
+        }
     </ul>
 </li>
 }

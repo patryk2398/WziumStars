@@ -4,20 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-10 offset-1 mb-5">
-    <div class="row">
+<div class="paddingX">
+    <div class="row mb-4">
         <div class="col-6">
-            <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Lista kuponów</h1>
+            <h1>Lista kuponów</h1>
         </div>
         <div class="col-6 text-right pt-3">
-            <a asp-action="Dodaj" class="goldButton">&nbsp;<i class="fas fa-plus"></i>&nbsp; DODAJ &nbsp;</a>
+            <a asp-action="Dodaj" class="grayButton">&nbsp;<i class="fas fa-plus"></i>&nbsp; DODAJ &nbsp;</a>
         </div>
     </div>
-    <hr />
     <div>
         @if (Model.Count() > 0)
         {
-            <table class="table table-striped border">
+            <table class="table table-striped border grayTable">
                 <tr class="table-secondary">
                     <th>
                         @Html.DisplayNameFor(m => m.Name)
@@ -31,8 +30,7 @@
                     <th>
                         @Html.DisplayNameFor(m => m.isActive)
                     </th>
-                    <th></th>
-                    <th></th>
+                    <th></th>            
                 </tr>
                 @foreach (var item in Model)
                 {
@@ -49,16 +47,7 @@
                         <td>
                             @Html.DisplayFor(m => item.isActive)
                         </td>
-                        <td style="width:150px">
-                            <div class="btn-group" role="group">
-                                <a class="goldButton py-2" asp-action="Edytuj" asp-route-Id="@item.Id">
-                                    <i class="fas fa-edit"></i>
-                                </a>&nbsp;
-                                <a class="brownButton py-2" asp-action="Usun" asp-route-Id="@item.Id">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
-                        </td>
+                        <partial name="_TableButtonPartial" model="item.Id"/>
                     </tr>
                 }
             </table>

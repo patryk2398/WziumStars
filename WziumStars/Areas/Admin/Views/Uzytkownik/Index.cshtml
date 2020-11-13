@@ -4,22 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<br />
-<br />
-<div class="backgroundWhite col-10 offset-1 mb-5">
-    <div class="row">
+<div class="paddingX">
+    <div class="row mb-4">
         <div class="col-6">
-            <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Lista użytkowików</h1>
+            <h1>Lista użytkowików</h1>
         </div>
         <div class="col-6 text-right pt-3">
-            <a asp-area="Identity" asp-controller="Account" asp-action="Register" class="goldButton">&nbsp;<i class="fas fa-plus"></i>&nbsp; Rejestracja nowego pracownika &nbsp;</a>
+            <a asp-area="Identity" asp-controller="Account" asp-action="Register" class="grayButton"><i class="fas fa-plus"></i>&nbsp; DODAJ PRACOWNIKA</a>
         </div>
     </div>
-    <br />
     <div>
         @if (Model.Count() > 0)
         {
-            <table class="table table-striped border">
+            <table class="table table-striped border grayTable">
                 <tr class="table-secondary">
                     <th>
                         @Html.DisplayNameFor(m => m.FirstName)

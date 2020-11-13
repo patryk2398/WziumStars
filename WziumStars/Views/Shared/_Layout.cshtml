@@ -9,82 +9,117 @@
     <title>@ViewData["Title"] - WziumStars</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://kit.fontawesome.com/2779b97bcd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="~/css/menu.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body onload="loadImage()">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WziumStars</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        @await Component.InvokeAsync("Menu")
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Kategoria" asp-action="Index">Kategorie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Podkategoria" asp-action="Index">Podkategorie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Klient" asp-controller="Produkt" asp-action="Index">Produkty</a>
-                        </li>
-                        @if (User.IsInRole(SD.AdminEndUser))
-                        {
-                            <li>
-                                <label for="drop-5" class="toggle">ADMIN <i class="fas fa-caret-down"></i></label>
-                                <a href="#">ADMIN <i class="fas fa-caret-down"></i></a>
-                                <input type="checkbox" id="drop-5" />
-                                <ul>
-                                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Kupon" asp-action="Index">Kupony</a></li>
-                                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Uzytkownik" asp-action="Index">Użytkownicy</a></li>
-                                    <li><a asp-area="Klient" asp-controller="Zamowienie" asp-action="Zarzadzaj"><span>ZAMÓWIENIA</span></a></li>
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                    @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
-                    {
-                        <button onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Home")'">
-                            @{
-                                var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount);
-                            }
-                            <i style="font-size:36px;" class="fas fa-shopping-cart"></i>(@count)
-                        </button>
-                    }
-                    else
-                    {
-                        <button onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Home")'">
-                            <i style="font-size:36px;" class="fas fa-shopping-cart"></i>(0)
-                        </button>
-                    }
-                </div>
+        <nav class="m-0">
+            <div id="logo">
+                <a asp-area="Klient" asp-controller="Home" asp-action="Index">
+                    <img id="logo" src="~/images/logo.png" />
+                </a>
             </div>
+            <label id="hamburger" for="drop" class="navbar-toggler second-button animated-icon2">
+                <span></span><span></span><span></span><span></span>
+            </label>
+            @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
+            {
+                <button id="shopping_cart" onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Home", new { Area = "Klient" })'">
+                    @{
+                        var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount);
+                    }
+                    <i class="fas fa-shopping-cart"></i>(@count)
+                </button>
+            }
+            else
+            {
+                <button id="shopping_cart" onclick="location.href='@Url.Action("CheckAnonymousUserOrIdentityUser", "Home", new { Area = "Klient" })'">
+                    <i class="fas fa-shopping-cart"></i>(0)
+                </button>
+            }
+            <input type="checkbox" id="drop" />
+            <ul class="menu offset-xl-4 offset-lg-4">
+                @await Component.InvokeAsync("Menu")
+                <li><a asp-action="Kontakt" asp-controller="Home" asp-area="Klient"><span>O NAS</span></a></li>
+                <li><a asp-action="Kontakt" asp-controller="Home" asp-area="Klient"><span>FAQ</span></a></li>
+                <li><a asp-action="Kontakt" asp-controller="Home" asp-area="Klient"><span>KONTAKT</span></a></li>
+                <li style="float: right;"><partial name="_LoginPartial" /></li>
+                @if (User.IsInRole(SD.AdminEndUser))
+                {
+                    <li>
+                        <label for="drop-5" class="toggle">ADMIN <i class="fas fa-caret-down"></i></label>
+                        <a href="#">ADMIN <i class="fas fa-caret-down"></i></a>
+                        <input type="checkbox" id="drop-5" />
+                        <ul>
+                            <li><a class="nav-link" asp-area="Admin" asp-controller="Kupon" asp-action="Index">Kupony</a></li>
+                            <li><a class="nav-link" asp-area="Admin" asp-controller="Uzytkownik" asp-action="Index">Użytkownicy</a></li>
+                            <li><a class="nav-link" asp-area="Klient" asp-controller="Zamowienie" asp-action="Zarzadzaj"><span>ZAMÓWIENIA</span></a></li>
+                            <li><a class="nav-link" asp-area="Admin" asp-controller="Kategoria" asp-action="Index">Kategorie</a></li>
+                            <li><a class="nav-link" asp-area="Admin" asp-controller="Podkategoria" asp-action="Index">Podkategorie</a></li>
+                            <li><a class="nav-link" asp-area="Klient" asp-controller="Produkt" asp-action="Index">Produkty</a></li>
+                        </ul>
+                    </li>
+                }
+            </ul>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div>
+        <main role="main">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - WziumStars - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 mt-5 text-center">
+                <h6 class="pb-2">KONTAKT</h6>
+                <p class="text-justify">W razie jakichkolwiek pytań lub problemów pisz śmiało na nasz adres mailowy: &nbsp; kontakt@wziumstars.pl</p>
+            </div>
+            <div class="col-xl-2 col-lg-4 mt-5 text-center">
+                <h6 class="pb-2">SKLEP</h6>
+                <a class="pb-2" href="#">Mój koszyk</a>
+                <a class="pb-2" href="#">Moje konto</a>
+                <a class="pb-2" href="#">Regulamin</a>
+            </div>
+            <div class="col-xl-2 col-lg-4 mt-5 text-center">
+                <h6 class="pb-2">POMOC</h6>
+                <a class="pb-2" href="#">FAQ</a>
+                <a class="pb-2" href="#">Montaż naklejek</a>
+                <a class="pb-2" href="#">Wysyłka oraz płatności</a>
+            </div>
+            <div class="col-xl-2 col-lg-6 mt-5 text-center">
+                <h6 class="pb-2">NEWSLETTER</h6>
+                <form>
+                    <p>Jeśli chcesz być informowany o nowych dropach i projektach zapisz się do newslettera.</p>
+                    <div class="mb-2">
+                        <input placeholder="Email" type="email" />
+                    </div>
+                    <div class="mb-2">
+                        <input type="checkbox" /> Przechodząc dalej akceptujesz politykę prywatności.
+                    </div>
+                    <div>
+                        <input class="grayButton" type="submit" value="SUBSKRYBUJ" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-3 col-lg-6 mt-5 text-center">
+                <h6 class="pb-2">PŁATNOŚCI</h6>
+                <div class="row">
+                    <img class="col-6" style="width: 100%;" src="~/images/PAYU_LOGO_LIME.png" />
+                    <img class="col-6" style="width: 100%;" src="~/images/blik.png" />
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5" style="font-size: smaller">
+            <span>Copyright © 2020 Wzium Stars. Wszelkie prawa zastrzeżone.</span><br />
+            <span>Realizacja Patryk Jaworski.</span>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/menu.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/144por3hcjyah2m4jzi3gsfywpvihxm2aecsoj9jlgeb0mgq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     @RenderSection("Scripts", required: false)

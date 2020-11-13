@@ -26,8 +26,10 @@ namespace WziumStars.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var Produkt = await _db.Produkt.Where(u => u.SubCategoryId == 10).ToListAsync();
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if(claim != null)
@@ -49,7 +51,7 @@ namespace WziumStars.Controllers
                 }
                 
             }
-            return View();
+            return View(Produkt);
         }
 
         public IActionResult CheckAnonymousUserOrIdentityUser()

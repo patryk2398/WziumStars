@@ -22,7 +22,7 @@ namespace WziumStars.Areas.Klient.Controllers
     public class ZamowienieController : Controller
     {
         private ApplicationDbContext _db;
-        private int PageSize = 2;
+        private int PageSize = 15;
         private readonly IEmailSender _emailSender;
         public ZamowienieController(ApplicationDbContext db, IEmailSender emailSender)
         {
@@ -65,7 +65,7 @@ namespace WziumStars.Areas.Klient.Controllers
                     }
                     else
                     {
-                        await _emailSender.SendEmailAsync(OrderHeader.Email, "Florist - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
+                        await _emailSender.SendEmailAsync(OrderHeader.Email, "Wzium Stars - zamówienie nr" + OrderHeader.Id.ToString() + " przyjęte ", "Zamówienie zostało opłacone oraz przyjęte do realizacji.");
 
                         OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
                         OrderHeader.Status = SD.StatusSubmitted;
@@ -166,7 +166,7 @@ namespace WziumStars.Areas.Klient.Controllers
         }
 
         [Authorize(Roles = SD.AdminEndUser)]
-        public async Task<IActionResult> Zarzadzaj(int productPage = 1, string searchEmail = null, string searchPhone = null, string searchName = null)
+        public async Task<IActionResult> Zarzadzaj(int productPage = 1, string searchEmail = null, string searchPhone = null, string searchId = null)
         {
             OrderListViewModel orderListVM = new OrderListViewModel()
             {
@@ -175,10 +175,10 @@ namespace WziumStars.Areas.Klient.Controllers
 
             StringBuilder parm = new StringBuilder();
             parm.Append("/Klient/Zamowienie/Zarzadzaj?productPage=:");
-            parm.Append("&searchName=");
-            if (searchName != null)
+            parm.Append("&searchId=");
+            if (searchId != null)
             {
-                parm.Append(searchName);
+                parm.Append(searchId);
             }
             parm.Append("&searchEmail=");
             if (searchEmail != null)
@@ -191,14 +191,14 @@ namespace WziumStars.Areas.Klient.Controllers
                 parm.Append(searchPhone);
             }
             List<OrderHeader> OrderHeaderList = new List<OrderHeader>();
-            if (searchName != null || searchEmail != null || searchPhone != null)
+            if (searchId != null || searchEmail != null || searchPhone != null)
             {
                 var user = new ApplicationUser();
 
-                if (searchName != null)
+                if (searchId != null)
                 {
-                    OrderHeaderList = await _db.OrderHeader.Include(o => o.ApplicationUser).Where(u => u.LastName.
-                    ToLower().Contains(searchName.ToLower())).OrderByDescending(o => o.OrderDate).ToListAsync();
+                    int searchIdInt = Convert.ToInt32(searchId);
+                    OrderHeaderList = await _db.OrderHeader.Include(o => o.ApplicationUser).Where(u => u.Id == searchIdInt).OrderByDescending(o => o.OrderDate).ToListAsync();
                 }
                 else
                 {

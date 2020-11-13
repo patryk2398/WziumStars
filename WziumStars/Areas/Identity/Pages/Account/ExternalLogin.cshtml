@@ -1,48 +1,46 @@
 ﻿@page
 @model ExternalLoginModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Rejestracja";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h4 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h4>
-<hr />
+<div class="paddingX">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+    <p id="external-login-description" class="text-info">
+        Rejestracja za pomocą <strong>@Model.ProviderDisplayName</strong> zakończona sukcesem.
+        Sprawdź swoje dane poniżej i kliknij przycisk rejestracji aby zakończyć proces tworzenia konta.
+    </p>
 
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-3">
-                    <label asp-for="Input.FirstName" class="control-label"></label>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
-                <div class="col-9">
-                    <input asp-for="Input.FirstName" class="form-control" />
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="Input.FirstName" class="control-label"></label>
+                    </div>
+                    <div class="col-9">
+                        <input asp-for="Input.FirstName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-3">
-                    <label asp-for="Input.LastName" class="control-label"></label>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="Input.LastName" class="control-label"></label>
+                    </div>
+                    <div class="col-9">
+                        <input asp-for="Input.LastName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
-                <div class="col-9">
-                    <input asp-for="Input.LastName" class="form-control" />
-                </div>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
     </div>
 </div>
 

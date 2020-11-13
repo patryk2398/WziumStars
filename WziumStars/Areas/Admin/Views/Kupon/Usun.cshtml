@@ -4,9 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-12 col-md-10 offset-md-1 mb-5">
-    <h1 style="font-family:'Playfair Display', serif;" class="goldColor">Usuń</h1>
-    <hr />
+<div class="paddingX">
+    <h1 class="mb-4">Usuń</h1>
     <form asp-action="Usun">
         <div class="form-group row">
             <div class="col-2">
@@ -48,10 +47,10 @@
                 <input disabled type="checkbox" asp-for="isActive" class="form-control" />
             </div>
         </div>
-        <br />
         <div class="form-group row">
-            <input type="submit" value="USUŃ" class="goldButton col-2" />
-            <a asp-action="Index" class="brownButton col-2 offset-1">POWRÓT</a>
+            <div class="col-5 offset-2">
+                <partial name="_DeleteAndBackButtonPartial" model="Model.Id" />
+            </div>
         </div>
     </form>
 </div>

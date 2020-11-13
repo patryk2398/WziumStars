@@ -51,15 +51,15 @@ namespace WziumStars.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email jest wymagany")]
+            [EmailAddress(ErrorMessage = "Błędna składnia adresu email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Zapamiętaj mnie")]
             public bool RememberMe { get; set; }
         }
 
@@ -134,7 +134,7 @@ namespace WziumStars.Areas.Identity.Pages.Account
 
                     
 
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("Zalogowano pomyślnie.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -143,12 +143,12 @@ namespace WziumStars.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Konto zostało zablokowane.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Błędny email lub hasło.");
                     return Page();
                 }
             }

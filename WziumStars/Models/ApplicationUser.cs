@@ -18,14 +18,14 @@ namespace WziumStars.Models
         [Display(Name = "Kraj")]
         public string Country { get; set; }
 
+        [Display(Name = "Stan")]
+        public string State { get; set; }
+
         [Display(Name = "Miejscowość")]
         public string City { get; set; }
 
-        [Display(Name = "Ulica")]
+        [Display(Name = "Ulica i numer budynku")]
         public string Street { get; set; }
-
-        [Display(Name = "Nr domu")]
-        public string HouseNumber { get; set; }
 
         [Display(Name = "Nr mieszkania")]
         public string ApartmentNumber { get; set; }

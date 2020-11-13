@@ -43,9 +43,9 @@ namespace WziumStars.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
+            [Required(ErrorMessage = "Email jest wymagany")]
+            [EmailAddress(ErrorMessage = "Błędna składnia adresu email")]
+            [Display(Name = "Nowy adres email")]
             public string NewEmail { get; set; }
         }
 
@@ -139,7 +139,7 @@ namespace WziumStars.Areas.Identity.Pages.Account.Manage
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Na podany adres email wysłaliśmy wiadomość z linkiem potwierdzającym zmianę adresu email. Jeśli nie widzisz go, sprawdź folder spam.";
             return RedirectToPage();
         }
     }

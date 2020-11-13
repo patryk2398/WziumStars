@@ -6,233 +6,122 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form method="post" class="mt-5">
+<div class="cartHeader text-center mb-5">
+    <a class="text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="Koszyk">KOSZYK</a>&nbsp;
+    <i class="fas fa-arrow-right"></i>&nbsp;
+    <a class="text-white text-decoration-none" asp-action="Podsumowanie" asp-area="Klient" asp-controller="Koszyk">SZCZEGÓŁY ZAMÓWIENIA</a>&nbsp;
+    <i class="fas fa-arrow-right"></i>&nbsp;
+    <span> PŁATNOŚĆ</span>
+</div>
+<form method="post" class="paddingX">
     @if (Model.listCart.Count > 0)
     {
-        <br />
-        <div class="backgroundWhiteBorder">
-            <div class="container">
-                <div class="card">
-                    <div class="card-header text-light" style="background-color:#534741;">
-                        <div class="col-6">
-                            <i class="fa fa-shopping-cart"></i> &nbsp;
-                            Podsumowanie zamówienia
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container rounded p-2">
-                            <div class="row">
-                                <div class="col-12 col-lg-6 pb-4">
-                                    <div class="row">
-                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="goldColor">Szczegóły odbioru:</span>
-                                        </h4>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.FirstName"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.FirstName" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.LastName"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.LastName" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.Company"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.Company" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.City"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.City" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.Street"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.Street" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.ApartmentNumber"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.ApartmentNumber" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.PostalCode"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.PostalCode" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.PhoneNumber"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.PhoneNumber" id="txtPhone" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.Email"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.Email" id="txtPhone" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.Comments"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <textarea asp-for="@Model.OrderHeader.Comments" style="height:100px;" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">
-                                        <label asp-for="@Model.OrderHeader.AnotherDeliveryAddress"></label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input asp-for="@Model.OrderHeader.AnotherDeliveryAddress" id="AnotherDeliveryAddress" type="checkbox" onclick="anotherAddress()" class="form-control" />
-                                    </div>
-                                </div>
-                                <div id="AnotherAddress" style="display: none;">
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryFirstName"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryFirstName" id="FirstName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryLastName"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryLastName" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryCompany"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryCompany" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryCity"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryCity" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryStreet"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryStreet" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryApartmentNumber"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryApartmentNumber" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label asp-for="@Model.OrderHeader.DeliveryPostalCode"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.OrderHeader.DeliveryPostalCode" id="txtName" type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-5 offset-lg-1">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="goldColor">Podsumowanie zamówienia:</span>
-                                    </h4>
-                                    <ul class="list-group mb-3">
-                                        @{ var total = 0.0;}
+        <div class="row">
+            <div class="col-6">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">DANE PŁATNOŚCI</h4>
+                <label asp-for="@Model.OrderHeader.FirstName"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.FirstName" id="FirstName" type="text" class="form-control mb-3 formInput" />
+                <p id="emptyFirstName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.LastName"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.LastName" id="LastName" type="text" class="form-control mb-3 formInput" />
+                <p id="emptyLastName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.Company"></label>
+                <input asp-for="@Model.OrderHeader.Company" id="txtName" type="text" class="form-control mb-3 formInput" />
+                <label asp-for="@Model.OrderHeader.City"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.City" id="City" type="text" class="form-control mb-3 formInput" />
+                <p id="emptyCity" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.Street"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.Street" id="Street" type="text" class="form-control mb-3 formInput" placeholder="Nazwa ulicy, numer budynku" />
+                <p id="emptyStreet" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.ApartmentNumber"></label>
+                <input asp-for="@Model.OrderHeader.ApartmentNumber" id="txtName" type="text" class="form-control mb-3 formInput" />
+                <label asp-for="@Model.OrderHeader.PostalCode"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.PostalCode" id="PostalCode" type="text" class="form-control mb-3 formInput" />
+                <p id="emptyPostalCode" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.PhoneNumber"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.PhoneNumber" id="PhoneNumber" type="tel" class="form-control mb-3 formInput" />
+                <p id="emptyPhoneNumber" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <label asp-for="@Model.OrderHeader.Email"></label><span class="text-danger"> *</span>
+                <input asp-for="@Model.OrderHeader.Email" id="Email" type="text" class="form-control mb-3 formInput" />
+                <p id="emptyEmail" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <p id="wrongEmail" class="text-danger mb-3" style="display:none;">Błędna składnia adresu email</p>
+                <label asp-for="@Model.OrderHeader.Comments"></label>
+                <textarea asp-for="@Model.OrderHeader.Comments" style="height:100px;" class="form-control mb-3 formInput"></textarea>
+                <div class="row">
+                    <input asp-for="@Model.OrderHeader.AnotherDeliveryAddress" id="AnotherDeliveryAddress" type="checkbox" onclick="anotherAddress()" class="col-1 mt-1" />
+                    <label asp-for="@Model.OrderHeader.AnotherDeliveryAddress"></label>
+                </div>
+                <div id="AnotherAddress" style="display: none;">
+                    <label asp-for="@Model.OrderHeader.DeliveryFirstName"></label><span class="text-danger"> *</span>
+                    <input asp-for="@Model.OrderHeader.DeliveryFirstName" id="DeliveryFirstName" type="text" class="form-control mb-3 formInput" />
+                    <p id="emptyDeliveryFirstName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    <label asp-for="@Model.OrderHeader.DeliveryLastName"></label><span class="text-danger"> *</span>
+                    <input asp-for="@Model.OrderHeader.DeliveryLastName" id="DeliveryLastName" type="text" class="form-control mb-3 formInput" />
+                    <p id="emptyDeliveryLastName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    <label asp-for="@Model.OrderHeader.DeliveryCompany"></label>
+                    <input asp-for="@Model.OrderHeader.DeliveryCompany" type="text" class="form-control mb-3 formInput" />
+                    <label asp-for="@Model.OrderHeader.DeliveryCity"></label><span class="text-danger"> *</span>
+                    <input asp-for="@Model.OrderHeader.DeliveryCity" id="DeliveryCity" type="text" class="form-control mb-3 formInput" />
+                    <p id="emptyDeliveryCity" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    <label asp-for="@Model.OrderHeader.DeliveryStreet"></label><span class="text-danger"> *</span>
+                    <input asp-for="@Model.OrderHeader.DeliveryStreet" id="DeliveryStreet" type="text" class="form-control mb-3 formInput" placeholder="Nazwa ulicy, numer budynku" />
+                    <p id="emptyDeliveryStreet" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    <label asp-for="@Model.OrderHeader.DeliveryApartmentNumber"></label>
+                    <input asp-for="@Model.OrderHeader.DeliveryApartmentNumber" type="text" class="form-control mb-3 formInput" />
+                    <label asp-for="@Model.OrderHeader.DeliveryPostalCode"></label><span class="text-danger"> *</span>
+                    <input asp-for="@Model.OrderHeader.DeliveryPostalCode" id="DeliveryPostalCode" type="text" class="form-control mb-3 formInput" />
+                    <p id="emptyDeliveryPostalCode" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="border p-4">
+                    <h4 class="text-center mb-1">TWOJE ZAMÓWIENIE</h4>
+                    @{ var total = 0.0;}
 
-                                        @foreach (var details in Model.listCart)
-                                        {
-                                            <li class="list-group-item d-flex justify-content-between">
-                                                <div>
-                                                    <h6 class="my-0">@details.Produkt.Name</h6>
-                                                    <small class="text-muted">Ilość: @details.Count</small>
-                                                </div>
-                                                <span class="text-muted">@(details.Produkt.Price * details.Count),00 zł</span>
-                                                @{ total += (details.Produkt.Price * details.Count); }
-                                            </li>
-                                        }
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <div class="text-danger">
-                                                <h6 class="my-0">Koszt dostawy</h6>
-                                            </div>
-                                            <span class="text-danger">+@(Model.OrderHeader.DeliveryCost),00 zł</span>
-                                        </li>
-                                        @if (Model.OrderHeader.CouponCode != null)
-                                        {
-                                            <li class="list-group-item d-flex justify-content-between">
-                                                <div class="text-success">
-                                                    <h6 class="my-0">Kod promocyjny</h6>
-                                                    <small class="text-success">@Model.OrderHeader.CouponCode</small>
-                                                </div>
-                                                <span class="text-success">-@(Model.OrderHeader.CouponCodeDiscount),00 zł</span>
-                                            </li>
-                                        }
-                                        <li class="list-group-item d-flex justify-content-between bg-light">
-                                            <strong class="goldColor">Razem (PLN)</strong>
-                                            <strong class="goldColor">@(Model.OrderHeader.OrderTotal),00 zł</strong>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4>Metoda płatności</h4>
-                                    <div class="col-9">
-                                        <input type="radio" name="payMethod" value="PayU" class="form-control" checked />PayU
-                                    </div>
-                                </div>
+                    @foreach (var details in Model.listCart)
+                    {
+                        <div class="row border-bottom py-3">
+                            <div class="col-6">
+                                <h6>@details.Produkt.Name</h6>
+                                <p class="text-muted">Ilość: @details.Count</p>
                             </div>
+                            <span class="col-6 text-right">@(details.Produkt.Price * details.Count),00 zł</span>
+                            @{ total += (details.Produkt.Price * details.Count); }
+                        </div>
+                    }
+                    <div class="row border-bottom py-3">
+                        <h6 class="col-6">KOSZT DOSTAWY</h6>
+                        <div class="col-6 text-right">
+                            <span>+ @(Model.OrderHeader.DeliveryCost),00 zł</span>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <a asp-area="Klient" asp-controller="Koszyk" asp-action="Index" class="brownButton col-3">POWRÓT</a>
-                            <button type="submit" id="btnPlaceOrder" onclick="return validateInput()" class="goldButton col-3 offset-6 text-center">ZAPŁAĆ</button>
+                    @if (Model.OrderHeader.CouponCode != null)
+                    {
+                        <div class="row border-bottom py-3 text-success">
+                            <div class="col-6">
+                                <h6>KOD PROMOCYJNY</h6>
+                                <p>@Model.OrderHeader.CouponCode</p>
+                            </div>
+                            <span class="col-6 text-right">- @(Model.OrderHeader.CouponCodeDiscount),00 zł</span>
                         </div>
+                    }
+                    <div class="row border-bottom py-3">
+                        <strong class="col-6">RAZEM</strong>
+                        <strong class="col-6 text-right">@(Model.OrderHeader.OrderTotal),00 zł</strong>
+                    </div>
+                    <div class="row border-bottom py-3">
+                        <strong class="col-5">METODA PŁATNOŚCI</strong>
+                        <div class="col-7 text-right">
+                            <input type="radio" name="payMethod" value="PayU" checked />PayU
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" id="btnPlaceOrder" onclick="return validateInput()" class="example_c mt-3">KUPUJĘ I PŁACĘ</button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="mt-4"><a asp-area="Klient" asp-controller="Koszyk" asp-action="Index" class="grayButton">POWRÓT</a></div>
     }
     else
     {
@@ -240,32 +129,167 @@
     }
 </form>
 
-@section Scripts{ 
+@section Scripts{
     <script>
         function validateInput() {
-            var time = document.getElementById("timepicker").value;
-            var dt = document.getElementById("datepicker").value;
-            var name = document.getElementById("txtName").value;
-            var phone = document.getElementById("txtPhone").value;
-            if (dt.toString().length == 0) {
-                alert("Please select pickup date")
-                return false;
+            document.getElementById("FirstName").style.border = "none";
+            document.getElementById("FirstName").className = "form-control formInput mb-3"
+            document.getElementById("emptyFirstName").style.display = "none";
+
+            document.getElementById("LastName").style.border = "none";
+            document.getElementById("LastName").className = "form-control formInput mb-3"
+            document.getElementById("emptyLastName").style.display = "none";
+
+            document.getElementById("City").style.border = "none";
+            document.getElementById("City").className = "form-control formInput mb-3"
+            document.getElementById("emptyCity").style.display = "none";
+
+            document.getElementById("Street").style.border = "none";
+            document.getElementById("Street").className = "form-control formInput mb-3"
+            document.getElementById("emptyStreet").style.display = "none";
+
+            document.getElementById("PostalCode").style.border = "none";
+            document.getElementById("PostalCode").className = "form-control formInput mb-3"
+            document.getElementById("emptyPostalCode").style.display = "none";
+
+            document.getElementById("PhoneNumber").style.border = "none";
+            document.getElementById("PhoneNumber").className = "form-control formInput mb-3"
+            document.getElementById("emptyPhoneNumber").style.display = "none";
+
+            document.getElementById("Email").style.border = "none";
+            document.getElementById("Email").className = "form-control formInput mb-3"
+            document.getElementById("emptyEmail").style.display = "none";
+            document.getElementById("wrongEmail").style.display = "none";
+
+            document.getElementById("DeliveryFirstName").style.border = "none";
+            document.getElementById("DeliveryFirstName").className = "form-control formInput mb-3"
+            document.getElementById("emptyDeliveryFirstName").style.display = "none";
+
+            document.getElementById("DeliveryLastName").style.border = "none";
+            document.getElementById("DeliveryLastName").className = "form-control formInput mb-3"
+            document.getElementById("emptyDeliveryLastName").style.display = "none";
+
+            document.getElementById("DeliveryCity").style.border = "none";
+            document.getElementById("DeliveryCity").className = "form-control formInput mb-3"
+            document.getElementById("emptyDeliveryCity").style.display = "none";
+
+            document.getElementById("DeliveryStreet").style.border = "none";
+            document.getElementById("DeliveryStreet").className = "form-control formInput mb-3"
+            document.getElementById("emptyDeliveryStreet").style.display = "none";
+
+            document.getElementById("DeliveryPostalCode").style.border = "none";
+            document.getElementById("DeliveryPostalCode").className = "form-control formInput mb-3"
+            document.getElementById("emptyDeliveryPostalCode").style.display = "none";
+
+            var FirstName = document.getElementById("FirstName").value;
+            var LastName = document.getElementById("LastName").value;
+            var City = document.getElementById("City").value;
+            var Street = document.getElementById("Street").value;
+            var PostalCode = document.getElementById("PostalCode").value;
+            var PhoneNumber = document.getElementById("PhoneNumber").value;
+            var Email = document.getElementById("Email").value;
+            var counter = 0;
+            if (FirstName.toString().length == 0) {
+                document.getElementById("FirstName").style.border = "solid 3px #d9534f";
+                document.getElementById("FirstName").className = "form-control formInput"
+                document.getElementById("emptyFirstName").style.display = "block";
+                counter += 1;
             }
-            else if (time.toString().length == 0) {
-                alert("Please select pickup time")
-                return false;
+            if (LastName.toString().length == 0) {
+                document.getElementById("LastName").style.border = "solid 3px #d9534f";
+                document.getElementById("LastName").className = "form-control formInput"
+                document.getElementById("emptyLastName").style.display = "block";
+                counter += 1;
             }
-            else if (name.toString().length == 0) {
-                alert("Please enter pickup name")
-                return false;
+            if (City.toString().length == 0) {
+                document.getElementById("City").style.border = "solid 3px #d9534f";
+                document.getElementById("City").className = "form-control formInput"
+                document.getElementById("emptyCity").style.display = "block";
+                counter += 1;
             }
-            else if (phone.toString().length == 0) {
-                alert("Please enter a phone number")
+            if (Street.toString().length == 0) {
+                document.getElementById("Street").style.border = "solid 3px #d9534f";
+                document.getElementById("Street").className = "form-control formInput"
+                document.getElementById("emptyStreet").style.display = "block";
+                counter += 1;
+            }
+            if (PostalCode.toString().length == 0) {
+                document.getElementById("PostalCode").style.border = "solid 3px #d9534f";
+                document.getElementById("PostalCode").className = "form-control formInput"
+                document.getElementById("emptyPostalCode").style.display = "block";
+                counter += 1;
+            }
+            if (PhoneNumber.toString().length == 0) {
+                document.getElementById("PhoneNumber").style.border = "solid 3px #d9534f";
+                document.getElementById("PhoneNumber").className = "form-control formInput"
+                document.getElementById("emptyPhoneNumber").style.display = "block";
+                counter += 1;
+            }
+            if (Email.toString().length == 0) {
+                document.getElementById("Email").style.border = "solid 3px #d9534f";
+                document.getElementById("Email").className = "form-control formInput"
+                document.getElementById("emptyEmail").style.display = "block";
+                counter += 1;
+            }
+            else if (!validateEmail(Email.toString())) {
+                document.getElementById("Email").style.border = "solid 3px #d9534f";
+                document.getElementById("Email").className = "form-control formInput"
+                document.getElementById("wrongEmail").style.display = "block";
+                counter += 1;
+            }
+
+            var checkBox = document.getElementById("AnotherDeliveryAddress");
+            if (checkBox.checked == true) {
+                var DeliveryFirstName = document.getElementById("DeliveryFirstName").value;
+                var DeliveryLastName = document.getElementById("DeliveryLastName").value;
+                var DeliveryCity = document.getElementById("DeliveryCity").value;
+                var DeliveryStreet = document.getElementById("DeliveryStreet").value;
+                var DeliveryPostalCode = document.getElementById("DeliveryPostalCode").value;
+
+                if (DeliveryFirstName.toString().length == 0) {
+                    document.getElementById("DeliveryFirstName").style.border = "solid 3px #d9534f";
+                    document.getElementById("DeliveryFirstName").className = "form-control formInput"
+                    document.getElementById("emptyDeliveryFirstName").style.display = "block";
+                    counter += 1;
+                }
+                if (DeliveryLastName.toString().length == 0) {
+                    document.getElementById("DeliveryLastName").style.border = "solid 3px #d9534f";
+                    document.getElementById("DeliveryLastName").className = "form-control formInput"
+                    document.getElementById("emptyDeliveryLastName").style.display = "block";
+                    counter += 1;
+                }
+                if (DeliveryCity.toString().length == 0) {
+                    document.getElementById("DeliveryCity").style.border = "solid 3px #d9534f";
+                    document.getElementById("DeliveryCity").className = "form-control formInput"
+                    document.getElementById("emptyDeliveryCity").style.display = "block";
+                    counter += 1;
+                }
+                if (DeliveryStreet.toString().length == 0) {
+                    document.getElementById("DeliveryStreet").style.border = "solid 3px #d9534f";
+                    document.getElementById("DeliveryStreet").className = "form-control formInput"
+                    document.getElementById("emptyDeliveryStreet").style.display = "block";
+                    counter += 1;
+                }
+                if (DeliveryPostalCode.toString().length == 0) {
+                    document.getElementById("DeliveryPostalCode").style.border = "solid 3px #d9534f";
+                    document.getElementById("DeliveryPostalCode").className = "form-control formInput"
+                    document.getElementById("emptyDeliveryPostalCode").style.display = "block";
+                    counter += 1;
+                }
+            }
+
+            if (counter > 0) {
                 return false;
             }
             else {
                 return true;
             }
+        }
+
+        function validateEmail(email) {
+
+            const re = /^(([^<>()[\]\\.,;:\s@@\"]+(\.[^<>()[\]\\.,;:\s@@\"]+)*)|(\".+\"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
 
         function anotherAddress() {

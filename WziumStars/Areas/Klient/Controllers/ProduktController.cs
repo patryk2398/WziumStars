@@ -41,8 +41,16 @@ namespace WziumStars.Areas.Klient.Controllers
 
         public async Task<IActionResult> Index(string subcategory)
         {
-            var Produkty = await _db.Produkt.Where(s => s.SubCategory.Name == subcategory).ToListAsync();
-            return View(Produkty);
+            if(subcategory != null)
+            {
+                var Produkty = await _db.Produkt.Include(m => m.SubCategory).Where(s => s.SubCategory.Name == subcategory).ToListAsync();
+                return View(Produkty);
+            }
+            else
+            {
+                var Produkty = await _db.Produkt.ToListAsync();
+                return View(Produkty);
+            }    
         }
 
         public IActionResult Dodaj()

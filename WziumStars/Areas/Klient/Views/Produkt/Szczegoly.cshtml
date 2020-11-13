@@ -5,54 +5,80 @@
     ViewData["Title"] = "Szczegoly";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<form method="post">
-    <div class="col-12 col-md-10 offset-md-1 mb-5">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (User.IsInRole(SD.AdminEndUser))
-        {
-            <div class="row offset-11">
-                <a class="goldButton py-2" asp-action="Edit" asp-route-Id="@Model.ProduktId">
-                    <i class="fas fa-edit"></i>
-                </a>&nbsp;
-                <a class="brownButton py-2" asp-action="Delete" asp-route-Id="@Model.ProduktId">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
+<img class="d-block w-100 mb-5" src="~/images/slide2.jpg" alt="Photo">
+<form method="post" class="paddingX">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @if (User.IsInRole(SD.AdminEndUser))
+    {
+        <div class="row offset-11">
+            <a class="btn btn-info text-white" asp-action="Edytuj" asp-route-Id="@Model.ProduktId">
+                <i class="fas fa-edit"></i>
+            </a>&nbsp;
+            <a class="btn btn-danger text-white" asp-action="Usun" asp-route-Id="@Model.ProduktId">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </div>
+    }
+    <div class="row">
+        <div class="col-6">
+            <img id="avatar" src="@Model.Produkt.Avatar" class="d-none" />
+            <div class="container p-0 pb-3">
+                <img id="expandedImg" style="width:100%">
             </div>
-        }
-        <div class="row" style="font-family:'Lucida Sans Unicode';">
-            <img src="@Model.Produkt.Avatar" class="col-lg-6 col-md-12 col-sm-12 col-xs-12" />
-            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                <h2 font-weight:600;" class="goldColor col-12">@Model.Produkt.Name</h2>
-                <label class="col-12 text-justify">@Model.Produkt.Description</label>
-                <div class="form-group row mt-2">
-                    <h2 class="col-5">@Model.Produkt.Price,00 zł</h2>
-                    <span class="col-2 offset-2 p-2">Ilość: </span>
-                    <span class="col-1 p-2">szt.</span>
-                </div>
-                &nbsp;&nbsp;&nbsp;<span asp-validation-for="Count" class="text-danger"></span>
-                <div class="ml-3">
-                    <button type="submit" value="Add to Cart" class="goldButton"><i class="fas fa-shopping-cart"></i> DODAJ DO KOSZYKA</button>
-                </div>
+            <div class="row">
+                @for (int i = 0; i < Model.Produkt.Images.Split("|").Count() - 1; i++)
+                {
+                    string gallery = Model.Produkt.Images;
+                    string[] array = gallery.Split("|");
+
+                    <div class="column p-0">
+                        <img class="col-12" src="@array[i]" alt="Nature" onclick="changeImage(this);">
+                    </div>
+                }
             </div>
         </div>
-
-        <div class="col-md-8">
-            <input asp-for="Produkt.Name" type="hidden" class="form-control" style="background-color: white; border: none; font-size: 30px; color: mediumseagreen; font-weight:600;" />
+        <div class="col-6" style="font-family:'Lucida Sans Unicode';">
+            <h3 class="goldColor col-12 text-center">@Model.Produkt.Name</h3>
+            <div>@Html.Raw(Model.Produkt.Description)</div>
+            <div class="form-group row mt-2">
+                <h3 class="col-5">@Model.Produkt.Price,00 zł</h3>
+                <span class="col-2 offset-2 p-2">Ilość: </span>
+                <input asp-for="Count" class="form-control col-2" />
+                <span class="col-1 p-2">szt.</span>
+            </div>
+            &nbsp;&nbsp;&nbsp;<span asp-validation-for="Count" class="text-danger"></span>
+            <div>
+                <button type="submit" value="Add to Cart" class="grayButton"><i class="fas fa-shopping-cart"></i> DODAJ DO KOSZYKA</button>
+            </div>
         </div>
-        <div class="col-md-8">
-            <input asp-for="Produkt.Description" type="hidden" class="form-control" />
-        </div>
-        <div class="col-md-8">
-            <input asp-for="Produkt.Price" readonly type="hidden" class="form-control" />
-        </div>
-
+    </div>
+    <div class="col-md-8">
+        <input asp-for="Produkt.Name" type="hidden" class="form-control" style="background-color: white; border: none; font-size: 30px; color: mediumseagreen; font-weight:600;" />
+    </div>
+    <div class="col-md-8">
+        <input asp-for="Produkt.Description" type="hidden" class="form-control" />
+    </div>
+    <div class="col-md-8">
+        <input asp-for="Produkt.Price" readonly type="hidden" class="form-control" />
     </div>
     <input asp-for="ProduktId" hidden />
 </form>
 
 @section Scripts{
+    <script>
+        function changeImage(imgs) {
+            var expandImg = document.getElementById("expandedImg");
+            expandImg.src = imgs.src;
+            expandImg.parentElement.style.display = "block";
+        }
 
+        function loadImage() {
+            var avatar = document.getElementById("avatar");
+            var expandImg = document.getElementById("expandedImg");
+            expandImg.src = avatar.src;
+            expandImg.parentElement.style.display = "block";
+        }
+    </script>
 
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

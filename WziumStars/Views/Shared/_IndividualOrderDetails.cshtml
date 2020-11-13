@@ -87,13 +87,17 @@
                 <span class="text-muted">ID zamówienia: </span>
                 <span class="badge badge-secondary badge-pill">@Model.OrderHeader.Id</span>
             </h4>
+            <div class="row col-12 text-dark">
+                <h6>Data zakupu: </h6>&nbsp;
+                <h6> @Model.OrderHeader.OrderDate</h6>
+            </div>
             <ul class="list-group mb-3">
                 @foreach (var details in Model.OrderDetails)
                 {  
                 <li class="list-group-item d-flex justify-content-between">
-                    <a asp-area="Klient" asp-controller="Produkt" asp-action="Szczegoly" asp-route-Id="@details.ProduktId">
+                    <a class="text-decoration-none" asp-area="Klient" asp-controller="Produkt" asp-action="Szczegoly" asp-route-Id="@details.ProduktId">
                         <div>
-                            <h6 class="my-0">@details.Name</h6>
+                            <h6 class="my-0 text-muted">@details.Name</h6>
                             <small class="text-muted">Ilość: @details.Count</small>
                         </div>
                         <span class="text-muted">@(details.Price * details.Count),00 zł</span>
@@ -121,25 +125,25 @@
                     <strong class="goldColor">@Model.OrderHeader.OrderTotal,00 zł</strong>
                 </li>
             </ul>
-            <div class="row">
-                <h5>Status: </h5>
-                <button type="submit" disabled class="goldButton col-10 offset-1">@Model.OrderHeader.Status</button>
+            <div class="row mb-4">
+                <h4 class="col-4">Status: </h4>
+                <button type="submit" disabled class="grayButton col-7">@Model.OrderHeader.Status</button>
             </div>
             @if (User.IsInRole(SD.AdminEndUser))
             {
                 @if (Model.OrderHeader.Status.Equals(SD.StatusSubmitted))
                 {
-                        <button type="submit" asp-action="OrderPrepare" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 goldButton mb-4">
+                        <button type="submit" asp-action="OrderPrepare" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 btn btn-success mb-4">
                             <i class="fas fa-check">&nbsp; W PRODUKCJI</i>
                         </button>
                 }
                 else if (Model.OrderHeader.Status.Equals(SD.StatusInProcess))
                 {
-                        <button type="submit" asp-action="OrderSent" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 goldButton mb-4">
+                        <button type="submit" asp-action="OrderSent" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 btn btn-success mb-4">
                             <i class="fas fa-flag-checkered">&nbsp; WYSŁANO</i>
                         </button>
                 }
-                <button type="submit" asp-action="OrderCancel" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 brownButton">
+                <button type="submit" asp-action="OrderCancel" asp-route-OrderId="@Model.OrderHeader.Id" class="col-12 btn btn-danger">
                     <i class="fas fa-times">&nbsp; ANULUJ</i>
                 </button>
             }
