@@ -219,7 +219,7 @@ namespace WziumStars.Areas.Klient.Controllers
             }
             else
             {
-                OrderHeaderList = await _db.OrderHeader.Include(o => o.ApplicationUser).Where(u => u.Status == SD.PaymentStatusPending || u.Status == SD.StatusInProcess || u.Status == SD.StatusSent).ToListAsync();
+                OrderHeaderList = await _db.OrderHeader.Include(o => o.ApplicationUser).Where(u => u.Status == SD.PaymentStatusPending || u.Status == SD.StatusInProcess || u.Status == SD.StatusSubmitted || u.Status == SD.StatusSent).ToListAsync();
             }
 
             foreach (OrderHeader item in OrderHeaderList)
@@ -263,8 +263,8 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusInProcess;
             await _db.SaveChangesAsync();
-            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-                  Email, "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " w produkcji",
+            await _emailSender.SendEmailAsync(orderHeader.Email,
+                  "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " w produkcji",
                   "Twoje zamówienie własnie jest przygotowywane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }
@@ -275,8 +275,8 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusSent;
             await _db.SaveChangesAsync();
-            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-                   Email, "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " zostało wysłane",
+            await _emailSender.SendEmailAsync(orderHeader.Email,
+                   "Wzium Stars - Zamówienie nr " + orderHeader.Id.ToString() + " zostało wysłane",
                    "Twoje zamówienie zostało wysłane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }
@@ -287,8 +287,8 @@ namespace WziumStars.Areas.Klient.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusCancelled;
             await _db.SaveChangesAsync();
-            await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().
-                    Email, "Wzium Stars - Anulowanie zamówienia nr " + orderHeader.Id.ToString(),
+            await _emailSender.SendEmailAsync(orderHeader.Email, 
+                    "Wzium Stars - Anulowanie zamówienia nr " + orderHeader.Id.ToString(),
                     "Twoje zamówienie zostało anulowane.");
             return RedirectToAction("Zarzadzaj", "Zamowienie");
         }

@@ -60,10 +60,53 @@ namespace WziumStars.Areas.Klient.Controllers
                 var couponFromDb = await _db.Kupon.Where(c => c.Name.ToLower() == detailsCard.OrderHeader.CouponCode.ToLower()).FirstOrDefaultAsync();
                 detailsCard.OrderHeader.OrderTotal = SD.DiscountedPrice(couponFromDb, detailsCard.OrderHeader.OrderTotalOriginal);
             }
+
+            if (HttpContext.Session.GetString(SD.ssDelivery) != null)
+            {
+                detailsCard.OrderHeader.DeliveryMethod = HttpContext.Session.GetString(SD.ssDelivery);
+                if (detailsCard.OrderHeader.DeliveryMethod == "poczta")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 9;
+                }
+                else if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 12;
+                }
+                else
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 15;
+                }
+            }
+            else
+            {
+                HttpContext.Session.SetString(SD.ssDelivery, "poczta");
+                detailsCard.OrderHeader.DeliveryMethod = "poczta";
+                detailsCard.OrderHeader.DeliveryCost = 9;
+            }
+
+            if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+            {
+                if (HttpContext.Session.GetString(SD.ssPaczkomat) != null)
+                {
+                    detailsCard.OrderHeader.Paczkomat = HttpContext.Session.GetString(SD.ssPaczkomat);
+                }
+            }
+
             detailsCard.OrderHeader.CouponCodeDiscount = detailsCard.OrderHeader.OrderTotalOriginal - detailsCard.OrderHeader.OrderTotal;
-            detailsCard.OrderHeader.DeliveryCost = 9;
             detailsCard.OrderHeader.OrderTotal += detailsCard.OrderHeader.DeliveryCost;
             return View(detailsCard);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Index")]
+        public IActionResult IndexPOST()
+        {
+            if (detailsCard.OrderHeader.Paczkomat != null)
+            {
+                HttpContext.Session.SetString(SD.ssPaczkomat, detailsCard.OrderHeader.Paczkomat);
+            }
+            return RedirectToAction("Podsumowanie");
         }
 
         public async Task<IActionResult> Podsumowanie()
@@ -104,8 +147,39 @@ namespace WziumStars.Areas.Klient.Controllers
                 var couponFromDb = await _db.Kupon.Where(c => c.Name.ToLower() == detailsCard.OrderHeader.CouponCode.ToLower()).FirstOrDefaultAsync();
                 detailsCard.OrderHeader.OrderTotal = SD.DiscountedPrice(couponFromDb, detailsCard.OrderHeader.OrderTotalOriginal);
             }
+
+            if (HttpContext.Session.GetString(SD.ssDelivery) != null)
+            {
+                detailsCard.OrderHeader.DeliveryMethod = HttpContext.Session.GetString(SD.ssDelivery);
+                if (detailsCard.OrderHeader.DeliveryMethod == "poczta")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 9;
+                }
+                else if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 12;
+                }
+                else
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 15;
+                }
+            }
+            else
+            {
+                HttpContext.Session.SetString(SD.ssDelivery, "poczta");
+                detailsCard.OrderHeader.DeliveryMethod = "poczta";
+                detailsCard.OrderHeader.DeliveryCost = 9;
+            }
+
+            if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+            {
+                if (HttpContext.Session.GetString(SD.ssPaczkomat) != null)
+                {
+                    detailsCard.OrderHeader.Paczkomat = HttpContext.Session.GetString(SD.ssPaczkomat);
+                }
+            }
+
             detailsCard.OrderHeader.CouponCodeDiscount = detailsCard.OrderHeader.OrderTotalOriginal - detailsCard.OrderHeader.OrderTotal;
-            detailsCard.OrderHeader.DeliveryCost = 9;
             detailsCard.OrderHeader.OrderTotal += detailsCard.OrderHeader.DeliveryCost;
             return View(detailsCard);
         }
@@ -164,6 +238,24 @@ namespace WziumStars.Areas.Klient.Controllers
             HttpContext.Session.SetInt32(SD.ssShoppingCartCount, cnt);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Poczta()
+        {
+            HttpContext.Session.SetString(SD.ssDelivery, "poczta");
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Paczkomat()
+        {
+            HttpContext.Session.SetString(SD.ssDelivery, "paczkomat");
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Kurier()
+        {
+            HttpContext.Session.SetString(SD.ssDelivery, "kurier");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -229,9 +321,38 @@ namespace WziumStars.Areas.Klient.Controllers
             {
                 detailsCard.OrderHeader.OrderTotal = detailsCard.OrderHeader.OrderTotalOriginal;
             }
+            if (HttpContext.Session.GetString(SD.ssDelivery) != null)
+            {
+                detailsCard.OrderHeader.DeliveryMethod = HttpContext.Session.GetString(SD.ssDelivery);
+                if (detailsCard.OrderHeader.DeliveryMethod == "poczta")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 9;
+                }
+                else if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 12;
+                }
+                else
+                {
+                    detailsCard.OrderHeader.DeliveryCost = 15;
+                }
+            }
+            else
+            {
+                HttpContext.Session.SetString(SD.ssDelivery, "poczta");
+                detailsCard.OrderHeader.DeliveryMethod = "poczta";
+                detailsCard.OrderHeader.DeliveryCost = 9;
+            }
+
+            if (detailsCard.OrderHeader.DeliveryMethod == "paczkomat")
+            {
+                if (HttpContext.Session.GetString(SD.ssPaczkomat) != null)
+                {
+                    detailsCard.OrderHeader.Paczkomat = HttpContext.Session.GetString(SD.ssPaczkomat);
+                }
+            }
 
             detailsCard.OrderHeader.CouponCodeDiscount = detailsCard.OrderHeader.OrderTotalOriginal - detailsCard.OrderHeader.OrderTotal;
-            detailsCard.OrderHeader.DeliveryCost = 9;
             detailsCard.OrderHeader.OrderTotal += detailsCard.OrderHeader.DeliveryCost;
             await _db.SaveChangesAsync();
             _db.Koszyk.RemoveRange(detailsCard.listCart);

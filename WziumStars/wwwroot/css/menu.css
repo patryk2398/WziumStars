@@ -12,6 +12,8 @@
 
 #logo {
     float: left;
+    height: 80px;
+    margin: 10px 20px;
 }
 
 #shopping_cart {
@@ -118,7 +120,7 @@ li > a:only-child:after {
     }
 
     #logo {
-        padding: 2px 6px 6px 6px;
+        height: 60px;
     }
 
     #hamburger {

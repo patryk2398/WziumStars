@@ -12,16 +12,15 @@
     <link rel="stylesheet" type="text/css" href="~/css/menu.css" />
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://geowidget.easypack24.net/css/easypack.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body onload="loadImage()">
     <header>
         <nav class="m-0">
-            <div id="logo">
-                <a asp-area="Klient" asp-controller="Home" asp-action="Index">
-                    <img id="logo" src="~/images/logo.png" />
-                </a>
-            </div>
+            <a class="p-0" asp-area="Klient" asp-controller="Home" asp-action="Index">
+                <img id="logo" src="~/images/logo.png" />
+            </a>
             <label id="hamburger" for="drop" class="navbar-toggler second-button animated-icon2">
                 <span></span><span></span><span></span><span></span>
             </label>
@@ -73,23 +72,23 @@
     </div>
     <footer>
         <div class="row">
-            <div class="col-xl-3 col-lg-4 mt-5 text-center">
+            <div class="col-xl-3 col-lg-12 mt-5 text-center">
                 <h6 class="pb-2">KONTAKT</h6>
                 <p class="text-justify">W razie jakichkolwiek pytań lub problemów pisz śmiało na nasz adres mailowy: &nbsp; kontakt@wziumstars.pl</p>
             </div>
-            <div class="col-xl-2 col-lg-4 mt-5 text-center">
+            <div class="col-xl-2 col-lg-12 mt-5 text-center">
                 <h6 class="pb-2">SKLEP</h6>
                 <a class="pb-2" href="#">Mój koszyk</a>
                 <a class="pb-2" href="#">Moje konto</a>
                 <a class="pb-2" href="#">Regulamin</a>
             </div>
-            <div class="col-xl-2 col-lg-4 mt-5 text-center">
+            <div class="col-xl-2 col-lg-12 mt-5 text-center">
                 <h6 class="pb-2">POMOC</h6>
                 <a class="pb-2" href="#">FAQ</a>
                 <a class="pb-2" href="#">Montaż naklejek</a>
                 <a class="pb-2" href="#">Wysyłka oraz płatności</a>
             </div>
-            <div class="col-xl-2 col-lg-6 mt-5 text-center">
+            <div class="col-xl-2 col-lg-12 mt-5 text-center">
                 <h6 class="pb-2">NEWSLETTER</h6>
                 <form>
                     <p>Jeśli chcesz być informowany o nowych dropach i projektach zapisz się do newslettera.</p>
@@ -104,11 +103,11 @@
                     </div>
                 </form>
             </div>
-            <div class="col-xl-3 col-lg-6 mt-5 text-center">
+            <div class="col-xl-3 col-lg-12 mt-5 text-center">
                 <h6 class="pb-2">PŁATNOŚCI</h6>
                 <div class="row">
-                    <img class="col-6" style="width: 100%;" src="~/images/PAYU_LOGO_LIME.png" />
-                    <img class="col-6" style="width: 100%;" src="~/images/blik.png" />
+                    <img class="col-xl-6 col-2" style="width: 100%;" src="~/images/PAYU_LOGO_LIME.png" />
+                    <img class="col-xl-6 col-2" style="width: 100%;" src="~/images/blik.png" />
                 </div>
             </div>
         </div>
@@ -122,6 +121,7 @@
     <script src="~/js/menu.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/144por3hcjyah2m4jzi3gsfywpvihxm2aecsoj9jlgeb0mgq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script async src="https://geowidget.easypack24.net/js/sdk-for-javascript.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

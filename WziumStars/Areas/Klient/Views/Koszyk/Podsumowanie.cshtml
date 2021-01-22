@@ -6,25 +6,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="cartHeader text-center mb-5">
+<div class="cartHeader text-center mb-5 d-none d-md-block">
     <a class="text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="Koszyk">KOSZYK</a>&nbsp;
     <i class="fas fa-arrow-right"></i>&nbsp;
     <a class="text-white text-decoration-none" asp-action="Podsumowanie" asp-area="Klient" asp-controller="Koszyk">SZCZEGÓŁY ZAMÓWIENIA</a>&nbsp;
     <i class="fas fa-arrow-right"></i>&nbsp;
     <span> PŁATNOŚĆ</span>
 </div>
+<div class="cartHeader text-center d-md-none mb-5">
+    <a class="text-white text-decoration-none" asp-action="Podsumowanie" asp-area="Klient" asp-controller="Koszyk">SZCZEGÓŁY ZAMÓWIENIA</a>&nbsp;
+</div>
 <form method="post" class="paddingX">
     @if (Model.listCart.Count > 0)
     {
-        <div class="row">
-            <div class="col-6">
+        <div class="row p-0 m-0">
+            <div class="col-md-6 col-12">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">DANE PŁATNOŚCI</h4>
-                <label asp-for="@Model.OrderHeader.FirstName"></label><span class="text-danger"> *</span>
-                <input asp-for="@Model.OrderHeader.FirstName" id="FirstName" type="text" class="form-control mb-3 formInput" />
-                <p id="emptyFirstName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
-                <label asp-for="@Model.OrderHeader.LastName"></label><span class="text-danger"> *</span>
-                <input asp-for="@Model.OrderHeader.LastName" id="LastName" type="text" class="form-control mb-3 formInput" />
-                <p id="emptyLastName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                <div class="row m-0">
+                    <div class="col-lg-6 col-12 p-0 pr-lg-2">
+                        <label asp-for="@Model.OrderHeader.FirstName"></label><span class="text-danger"> *</span>
+                        <input asp-for="@Model.OrderHeader.FirstName" id="FirstName" type="text" class="form-control mb-3 formInput" />
+                        <p id="emptyFirstName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    </div>
+                    <div class="col-lg-6 col-12 p-0 pl-lg-2">
+                        <label asp-for="@Model.OrderHeader.LastName"></label><span class="text-danger"> *</span>
+                        <input asp-for="@Model.OrderHeader.LastName" id="LastName" type="text" class="form-control mb-3 formInput" />
+                        <p id="emptyLastName" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
+                    </div>
+                </div>
                 <label asp-for="@Model.OrderHeader.Company"></label>
                 <input asp-for="@Model.OrderHeader.Company" id="txtName" type="text" class="form-control mb-3 formInput" />
                 <label asp-for="@Model.OrderHeader.City"></label><span class="text-danger"> *</span>
@@ -47,10 +56,13 @@
                 <p id="wrongEmail" class="text-danger mb-3" style="display:none;">Błędna składnia adresu email</p>
                 <label asp-for="@Model.OrderHeader.Comments"></label>
                 <textarea asp-for="@Model.OrderHeader.Comments" style="height:100px;" class="form-control mb-3 formInput"></textarea>
-                <div class="row">
-                    <input asp-for="@Model.OrderHeader.AnotherDeliveryAddress" id="AnotherDeliveryAddress" type="checkbox" onclick="anotherAddress()" class="col-1 mt-1" />
-                    <label asp-for="@Model.OrderHeader.AnotherDeliveryAddress"></label>
-                </div>
+                @if (Model.OrderHeader.DeliveryMethod != "paczkomat")
+                {
+                    <div class="row m-0">
+                        <input asp-for="@Model.OrderHeader.AnotherDeliveryAddress" id="AnotherDeliveryAddress" type="checkbox" onclick="anotherAddress()" class="mt-1" />&nbsp;&nbsp;
+                        <label asp-for="@Model.OrderHeader.AnotherDeliveryAddress"></label>
+                    </div>
+                }
                 <div id="AnotherAddress" style="display: none;">
                     <label asp-for="@Model.OrderHeader.DeliveryFirstName"></label><span class="text-danger"> *</span>
                     <input asp-for="@Model.OrderHeader.DeliveryFirstName" id="DeliveryFirstName" type="text" class="form-control mb-3 formInput" />
@@ -73,7 +85,7 @@
                     <p id="emptyDeliveryPostalCode" class="text-danger mb-3" style="display:none;">To pole jest wymagane</p>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 col-12 mt-md-0 mt-5">
                 <div class="border p-4">
                     <h4 class="text-center mb-1">TWOJE ZAMÓWIENIE</h4>
                     @{ var total = 0.0;}
@@ -109,6 +121,13 @@
                         <strong class="col-6">RAZEM</strong>
                         <strong class="col-6 text-right">@(Model.OrderHeader.OrderTotal),00 zł</strong>
                     </div>
+                    @if (Model.OrderHeader.DeliveryMethod == "paczkomat")
+                    {
+                        <div class="row border-bottom py-3">
+                            <strong class="col-6">WYBRANY PACZKOMAT</strong>
+                            <strong class="col-6 text-right">@(Model.OrderHeader.Paczkomat)</strong>
+                        </div>
+                    }    
                     <div class="row border-bottom py-3">
                         <strong class="col-5">METODA PŁATNOŚCI</strong>
                         <div class="col-7 text-right">
@@ -116,12 +135,11 @@
                         </div>
                     </div>
                     <div>
-                        <button type="submit" id="btnPlaceOrder" onclick="return validateInput()" class="example_c mt-3">KUPUJĘ I PŁACĘ</button>
+                        <button type="submit" id="btnPlaceOrder" onclick="return validateInput()" class="goldButton mt-3 col-12">KUPUJĘ I PŁACĘ</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mt-4"><a asp-area="Klient" asp-controller="Koszyk" asp-action="Index" class="grayButton">POWRÓT</a></div>
     }
     else
     {

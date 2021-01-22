@@ -4,21 +4,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="cartHeader text-center mb-5">
-    <a class="text-white text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="KoszykUzytkownika">KOSZYK</a>&nbsp;
-    <i class="fas fa-arrow-right"></i>&nbsp;
-    <a class="text-decoration-none" asp-action="Podsumowanie" asp-area="Klient" asp-controller="KoszykUzytkownika">SZCZEGÓŁY ZAMÓWIENIA</a>&nbsp;
-    <i class="fas fa-arrow-right"></i>&nbsp;
-    <span> PŁATNOŚĆ</span>
-</div>
+@if (Model.listCart.Count > 0)
+{
+    <div class="cartHeader text-center mb-5 d-none d-md-block">
+        <a class="text-white text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="KoszykUzytkownika">KOSZYK</a>&nbsp;
+        <i class="fas fa-arrow-right"></i>&nbsp;
+        <a class="text-decoration-none" asp-action="Podsumowanie" asp-area="Klient" asp-controller="KoszykUzytkownika">SZCZEGÓŁY ZAMÓWIENIA</a>&nbsp;
+        <i class="fas fa-arrow-right"></i>&nbsp;
+        <span> PŁATNOŚĆ</span>
+    </div>
+    <div class="cartHeader text-center d-md-none mb-5">
+        <a class="text-white text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="KoszykUzytkownika">KOSZYK</a>&nbsp;
+    </div>
+}
+else
+{
+    <div class="cartHeader text-center mb-5">
+        <a class="text-white text-decoration-none" asp-action="Index" asp-area="Klient" asp-controller="KoszykUzytkownika">KoszykUzytkownika</a>&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;<span> SZCZEGÓŁY ZAMÓWIENIA </span>&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;<span> PŁATNOŚĆ</span>
+    </div>
+}
 <form method="post" class="paddingX">
     @if (Model.listCart.Count > 0)
     {
         <input id="userId" asp-for="@Model.listCart[0].ApplicationUserId" hidden />
-        <div class="row">
-            <div class="col-8">
+        <div class="row p-0 m-0">
+            <div class="col-lg-8 col-12">
                 <table class="table grayFont">
-                    <tr>
+                    <tr class="d-none d-lg-table-row">
                         <th>
 
                         </th>
@@ -45,17 +57,32 @@
                             </td>
                             <td>
                                 <a asp-area="Klient" asp-controller="Produkt" asp-action="Szczegoly" asp-route-Id="@item.ProduktId">
-                                    <img src="@item.Produkt.Avatar" class="rounded" style="margin-right: -60px; height: 75px;" />
+                                    <img src="@item.Produkt.Avatar" class="rounded" style="height: 75px;" />
                                 </a>
                             </td>
-                            <td style="vertical-align:middle">
+                            <td style="vertical-align:middle" class="d-none d-lg-table-cell">
                                 <strong>@item.Produkt.Name</strong>
                             </td>
-                            <td style="vertical-align:middle">
+                            <td style="vertical-align:middle" class="d-none d-lg-table-cell">
                                 <strong>@item.Produkt.Price<span>,00 zł</span></strong>
                             </td>
-                            <td style="vertical-align:middle">
+                            <td style="vertical-align:middle" class="d-none d-lg-table-cell">
                                 <div class="row">
+                                    <button type="submit" class="cartCountButton" asp-action="Plus" asp-route-cartId="@item.Id">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <div class="cartCountDiv">
+                                        <span>@item.Count</span>
+                                    </div>
+                                    <button type="submit" class="cartCountButton" asp-action="Minus" asp-route-cartId="@item.Id">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="d-lg-none">
+                                <strong class="d-block mb-1">@item.Produkt.Name</strong>
+                                <strong class="d-block mb-2">@item.Produkt.Price<span>,00 zł</span></strong>
+                                <div class="row m-0">
                                     <button type="submit" class="cartCountButton" asp-action="Plus" asp-route-cartId="@item.Id">
                                         <i class="fas fa-plus"></i>
                                     </button>
@@ -70,35 +97,53 @@
                         </tr>
                     }
                 </table>
-                <div class="row">
-                    <div class="col-12 col-md-5">
-                        <div class="row">
-                            <div class="col-7">
-                                <input asp-for="@Model.OrderHeader.CouponCode" id="txtCouponCode" class="form-control formInput" placeholder="Kupon..."/>
-                            </div>
-                            <div class="col-5" style="margin-top:2px;">
-                                <button type="submit" class="btn btn-sm form-control btn-outline-success" id="btnCoupon" asp-action="AddCoupon">
-                                    ZATWIERDŹ
-                                </button>
-                                <button type="submit" class="btn btn-sm form-control btn-outline-danger" style="display:none" id="btnRemoveCoupon" asp-action="RemoveCoupon">
-                                    USUŃ
-                                </button>
-                            </div>
-                        </div>
+                <div class="row mb-5 col-lg-7 col-12">
+                    <div class="col-6">
+                        <input asp-for="@Model.OrderHeader.CouponCode" id="txtCouponCode" class="form-control" placeholder="Kupon..." style="border-radius:1px;" />
+                    </div>
+                    <div class="col-6" style="margin-top:2px;">
+                        <button type="submit" class="btn btn-sm form-control btn-outline-success" id="btnCoupon" asp-action="AddCoupon" style="border-radius:1px;">
+                            ZATWIERDŹ
+                        </button>
+                        <button type="submit" class="btn btn-sm form-control btn-outline-danger" style="display:none; border-radius:1px;" id="btnRemoveCoupon" asp-action="RemoveCoupon">
+                            USUŃ
+                        </button>
                     </div>
                 </div>
+                @if (Model.OrderHeader.DeliveryMethod == "paczkomat")
+                {
+                    <div style="height:500px;" id="easypack-map"></div>
+                }
             </div>
-            <div class="col-4 border p-4">
+            <div class="col-lg-4 col-12 mt-lg-0 mt-5 border p-4">
                 <h4 class="text-center mb-1">PODSUMOWANIE KOSZYKA</h4>
                 <div class="row border-bottom py-3">
                     <strong class="col-6">KWOTA</strong>
                     <strong class="col-6 text-right">@Model.OrderHeader.OrderTotalOriginal,00 zł</strong>
                 </div>
-                <div class="row border-bottom py-3">
-                    <strong class="col-3">WYSYŁKA</strong>
-                    <div class="col-9 text-right">
-                        List polecony priorytetowy: <strong>9,00 zł</strong> <input type="radio" name="Delivery" value="Poczta" checked />
-                    </div>
+                <div class="border-bottom py-3">
+                    <strong class="d-block">WYSYŁKA</strong>
+                    <input class="d-none" id="deliveryMethod" value="@Model.OrderHeader.DeliveryMethod" />
+                    <button id="poczta" type="submit" asp-action="Poczta" class="deliveryMethod col-3 p-0 mr-2">
+                        <img src="~/images/poczta.png" class="deliveryMethodImage" />
+                        <strong>9,00 zł</strong>
+                    </button>
+                    <button id="paczkomat" type="submit" asp-action="Paczkomat" class="deliveryMethod col-3 p-0 mr-2">
+                        <img src="~/images/paczkomat.png" class="deliveryMethodImage" />
+                        <strong>12,00 zł</strong>
+                    </button>
+                    <button id="kurier" type="submit" asp-action="Kurier" class="deliveryMethod col-3 p-0">
+                        <img src="~/images/kurier.png" class="deliveryMethodImage" />
+                        <strong>15,00 zł</strong>
+                    </button>
+                    @if (Model.OrderHeader.DeliveryMethod == "paczkomat")
+                    {
+                        <div class="mt-4 row m-0">
+                            <strong class="col-7 mt-1">WYBRANY PACZKOMAT: </strong>
+                            <input readonly asp-for="@Model.OrderHeader.Paczkomat" id="selectedPaczkomat" type="text" class="form-control mb-3 formInput col-5" style="border-radius:1px;" />
+                            <p id="emptyPaczkomat" class="text-danger mb-3" style="display:none;">Proszę wybrać paczkomat</p>
+                        </div>
+                    }
                 </div>
                 @if (Model.OrderHeader.CouponCode != null)
                 {
@@ -107,17 +152,14 @@
                         <strong class="col-6 text-right">-@(Model.OrderHeader.CouponCodeDiscount),00 zł</strong>
                     </div>
                 }
-                <div class="row py-3">
+                <div class="row py-3 mb-4">
                     <strong class="col-3">SUMA</strong>
                     <div class="col-9 text-right">
                         <strong>@Model.OrderHeader.OrderTotal,00 zł</strong>
                     </div>
                 </div>
+                <button type="submit" onclick="return validateInput()" class="goldButton col-12">PRZEJDŹ DO KASY</button>
             </div>
-        </div>
-        <div class="row mt-5">
-            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="grayButton col-3">POWRÓT</a>
-            <a asp-action="Podsumowanie" asp-area="Klient" asp-controller="KoszykUzytkownika" class="whiteButton col-3 offset-6 text-center">PRZEJDŹ DO KASY</a>
         </div>
     }
     else
@@ -144,5 +186,49 @@
                 document.getElementById('btnRemoveCoupon').style.display = 'none';
             }
         });
+    </script>
+    <script type="text/javascript">
+        window.easyPackAsyncInit = function () {
+            easyPack.init({
+                defaultLocale: 'pl',
+                mapType: 'osm',
+                searchType: 'osm',
+                points: {
+                    types: ['parcel_locker']
+                },
+                map: {
+                    initialTypes: ['parcel_locker']
+                }
+            });
+            var map = easyPack.mapWidget('easypack-map', function (point) {
+                document.getElementById("selectedPaczkomat").value = point.name;
+            });
+        };
+    </script>
+    <script>
+        window.onload = function deliveryMethod() {
+            var deliveryMethod = document.getElementById("deliveryMethod").value;
+            if (deliveryMethod == "poczta") {
+                document.getElementById("poczta").style.backgroundColor = "#f6b93b";
+            }
+            else if (deliveryMethod == "paczkomat") {
+                document.getElementById("paczkomat").style.backgroundColor = "#f6b93b";
+            }
+            else {
+                document.getElementById("kurier").style.backgroundColor = "#f6b93b";
+            }
+        }
+    </script>
+    <script>
+        function validateInput() {
+            if (document.getElementById("selectedPaczkomat").value == "") {
+                document.getElementById("selectedPaczkomat").style.border = "solid 3px #f00";
+                document.getElementById("emptyPaczkomat").style.display = "block";
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
     </script>
 }

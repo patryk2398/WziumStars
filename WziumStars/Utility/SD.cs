@@ -14,6 +14,8 @@ namespace WziumStars.Utility
         public const string CustomerEndUser = "Customer";
         public const string ssShoppingCartCount = "ssCartCount";
         public const string ssCouponCode = "ssCouponCode";
+        public const string ssDelivery = "ssDelivery";
+        public const string ssPaczkomat = "ssPaczkomat";
 
         public const string StatusSubmitted = "PRZYJETO";
         public const string StatusInProcess = "W PRZYGOTOWANIU";
